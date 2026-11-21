@@ -16,15 +16,15 @@ lf,  err := legalparty.ParseLegalFormClass("legal_entity")
 
 ## What it validates
 
-| Type            | Rules carried                                                                 |
-| --------------- | ----------------------------------------------------------------------------- |
-| `NIP`           | 10 digits, weights 6‑5‑7‑2‑3‑4‑5‑6‑7 mod 11; remainder 10 is invalid (regulation edge invoices got wrong) |
-| `VATID`         | two-letter assigned CC prefix + national part: DE full ISO 7064 Mod 11,10 checksum; NL BTW shape; AT/FI/… fixed lengths; generic EU fallback |
-| `LEI`           | 20 chars, ISO 17442 mod‑97 checksum, case-normalized                          |
-| `TaxNumber`     | per-country national tax numbers (DE Steuernummer 10–13 digits, PL NIP-linked, generic 5–16) |
-| `RegisterRef`   | registry + number (HRB, KRS, …)                                               |
-| `CountryCode`   | ISO 3166‑1 alpha‑2 officially-assigned set only (no XK/EU/ZZ)                 |
-| `LegalFormClass`| natural_person / legal_entity / partnership / branch / trust                  |
+| Type             | Rules carried                                                                                                                                |
+| ---------------- | -------------------------------------------------------------------------------------------------------------------------------------------- |
+| `NIP`            | 10 digits, weights 6‑5‑7‑2‑3‑4‑5‑6‑7 mod 11; remainder 10 is invalid (regulation edge invoices got wrong)                                    |
+| `VATID`          | two-letter assigned CC prefix + national part: DE full ISO 7064 Mod 11,10 checksum; NL BTW shape; AT/FI/… fixed lengths; generic EU fallback |
+| `LEI`            | 20 chars, ISO 17442 mod‑97 checksum, case-normalized                                                                                         |
+| `TaxNumber`      | per-country national tax numbers (DE Steuernummer 10–13 digits, PL NIP-linked, generic 5–16)                                                 |
+| `RegisterRef`    | registry + number (HRB, KRS, …)                                                                                                              |
+| `CountryCode`    | ISO 3166‑1 alpha‑2 officially-assigned set only (no XK/EU/ZZ)                                                                                |
+| `LegalFormClass` | natural_person / legal_entity / partnership / branch / trust                                                                                 |
 
 Separators (space, `-`, `.`, `/`) normalize away; every rejection is a `go-error-family` Rejection with a stable machine code (`legalparty.nip.checksum_failed`, …).
 
