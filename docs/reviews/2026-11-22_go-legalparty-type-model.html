@@ -1,0 +1,1310 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>go-legalparty: Data Model Review 2026-11-22</title>
+    <style>
+      /* =========================================================================
+         BAUHAUS LIGHT — Editorial template
+         Design language: form follows function. Primary colors on warm paper.
+         Zero external dependencies: system fonts, no CDN, no build step.
+         Token architecture: see references/bauhaus-tokens.md
+         ========================================================================= */
+
+      :root {
+        /* --- Primitive palette (Bauhaus Light) --- */
+        --color-paper: #f4f4f0;
+        --color-paper-2: #ffffff;
+        --color-paper-3: #e8e8e2;
+        --color-ink: #111111;
+        --color-red: #e63946;
+        --color-blue: #1d3557;
+        --color-yellow: #f4d35e;
+        --color-hairline: rgba(17, 17, 17, 0.14);
+        --color-hairline-strong: rgba(17, 17, 17, 0.3);
+
+        /* --- Semantic layer (shared vocabulary with dark template) --- */
+        --surface: var(--color-paper);
+        --surface-raised: var(--color-paper-2);
+        --surface-sunken: var(--color-paper-3);
+        --text: var(--color-ink);
+        --text-muted: rgba(17, 17, 17, 0.72);
+        --text-faint: rgba(17, 17, 17, 0.5);
+        --border: var(--color-hairline);
+        --border-strong: var(--color-hairline-strong);
+        --accent: var(--color-red);
+        --problem: var(--color-red);
+        --solution: var(--color-blue);
+        --warning: var(--color-yellow);
+
+        /* --- Backward-compatible aliases (do not break consumer skills) --- */
+        --bg: var(--surface);
+        --bg-elevated: var(--surface-raised);
+        --bg-sunken: var(--surface-sunken);
+        --bg-card: var(--surface-raised);
+        --bg-code: var(--surface-sunken);
+        --ink: var(--text);
+        --ink-secondary: var(--text-muted);
+        --ink-muted: var(--text-faint);
+        --rose: var(--problem);
+        --rose-glow: color-mix(in srgb, var(--problem) 15%, transparent);
+        --emerald: var(--solution);
+        --emerald-glow: color-mix(in srgb, var(--solution) 15%, transparent);
+        --amber: var(--warning);
+        --amber-glow: color-mix(in srgb, var(--warning) 15%, transparent);
+        --amber-light: color-mix(in srgb, var(--warning) 22%, transparent);
+        --coral: var(--problem);
+        --coral-light: color-mix(in srgb, var(--problem) 12%, transparent);
+        --teal: var(--solution);
+        --teal-light: color-mix(in srgb, var(--solution) 12%, transparent);
+
+        /* --- Shape --- */
+        --radius: 0px;
+        --radius-sm: 0px;
+
+        /* --- Type stacks (system only — zero external fonts) --- */
+        --font-heading:
+          ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont,
+          "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        --font-body:
+          ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont,
+          "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        --font-mono:
+          ui-monospace, "Cascadia Code", "Source Code Pro", "JetBrains Mono",
+          Menlo, Consolas, monospace;
+      }
+
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+      html {
+        scroll-behavior: smooth;
+      }
+      section[id],
+      [id] {
+        scroll-margin-top: 60px;
+      }
+
+      body {
+        background: var(--surface);
+        color: var(--text);
+        font-family: var(--font-body);
+        font-size: 16px;
+        line-height: 1.65;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+      }
+
+      /* --- Accessibility: keyboard focus --- */
+      :focus-visible {
+        outline: 2px solid var(--accent);
+        outline-offset: 2px;
+      }
+      a:focus-visible {
+        outline-offset: -1px;
+      }
+
+      /* --- Full-bleed top bar --- */
+      .top-bar {
+        background: var(--text);
+        color: var(--surface);
+        padding: 0.6rem 2rem;
+        font-family: var(--font-mono);
+        font-size: 0.75rem;
+        font-weight: 700;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+
+      /* --- Layout: optional sticky sidebar TOC --- */
+      .layout {
+        display: flex;
+        gap: 2.5rem;
+        padding: 2rem;
+      }
+      .sidebar {
+        width: 220px;
+        flex-shrink: 0;
+        position: sticky;
+        top: 1rem;
+        align-self: flex-start;
+        height: calc(100vh - 2rem);
+        overflow-y: auto;
+        display: none;
+      }
+      .sidebar nav {
+        display: flex;
+        flex-direction: column;
+        gap: 0;
+      }
+      .sidebar .label {
+        font-family: var(--font-mono);
+        font-size: 0.68rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.14em;
+        color: var(--accent);
+        margin-bottom: 0.75rem;
+        padding-bottom: 0.4rem;
+        border-bottom: 2px solid var(--text);
+      }
+      .sidebar a {
+        font-size: 0.86rem;
+        color: var(--text);
+        text-decoration: none;
+        padding: 0.5rem 0.75rem;
+        border-left: 4px solid transparent;
+        font-weight: 600;
+        transition: all 0.15s ease;
+        line-height: 1.4;
+      }
+      .sidebar a:hover,
+      .sidebar a.active {
+        border-left-color: var(--accent);
+        background: color-mix(in srgb, var(--accent) 8%, transparent);
+        color: var(--accent);
+      }
+      .main {
+        flex: 1;
+        min-width: 0;
+      }
+
+      /* --- Headings --- */
+      h1,
+      h2,
+      h3,
+      h4 {
+        font-family: var(--font-heading);
+        font-weight: 900;
+        letter-spacing: -0.02em;
+        color: var(--text);
+      }
+      h1 {
+        font-size: clamp(1.9rem, 4.5vw, 2.8rem);
+        line-height: 1.05;
+        margin: 0 0 0.6rem;
+      }
+      h2 {
+        font-size: 1.5rem;
+        margin: 2.5rem 0 1rem;
+        padding-bottom: 0.4rem;
+        border-bottom: 3px solid var(--text);
+        display: flex;
+        align-items: baseline;
+        gap: 0.7rem;
+      }
+      h2 .num {
+        font-family: var(--font-mono);
+        font-size: 0.82rem;
+        color: var(--accent);
+        font-weight: 700;
+        letter-spacing: 0.04em;
+      }
+      h3 {
+        font-size: 1.15rem;
+        margin: 0 0 0.4rem;
+        font-weight: 700;
+      }
+      h4 {
+        font-size: 1rem;
+        margin: 0 0 0.3rem;
+        font-weight: 700;
+      }
+      p {
+        margin: 0 0 1rem;
+      }
+
+      /* --- Hero --- */
+      .hero {
+        padding: 1.5rem 0 2rem;
+        margin-bottom: 1.5rem;
+        border-bottom: 3px solid var(--text);
+      }
+      .eyebrow {
+        font-family: var(--font-mono);
+        font-size: 0.72rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.16em;
+        color: var(--accent);
+        margin-bottom: 0.9rem;
+      }
+      .subtitle {
+        font-size: 1.1rem;
+        color: var(--text-muted);
+        max-width: 70ch;
+        margin: 0 0 1rem;
+      }
+      .meta {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+      }
+      .tag {
+        display: inline-block;
+        font-family: var(--font-mono);
+        font-size: 0.7rem;
+        font-weight: 700;
+        letter-spacing: 0.04em;
+        padding: 0.25rem 0.6rem;
+        background: var(--surface-sunken);
+        color: var(--text);
+        border: 1px solid var(--border-strong);
+      }
+      .tag.amber {
+        background: var(--warning);
+        border-color: var(--warning);
+        color: var(--text);
+      }
+      .tag.teal {
+        background: var(--solution);
+        border-color: var(--solution);
+        color: var(--surface);
+      }
+
+      /* Bauhaus signature: geometric shape cluster (optional) */
+      .hero-shapes {
+        position: relative;
+        height: 90px;
+        margin-bottom: 1.2rem;
+      }
+      .hero-shapes .circle {
+        position: absolute;
+        top: 0;
+        right: 180px;
+        width: 64px;
+        height: 64px;
+        background: var(--problem);
+        border-radius: 50%;
+      }
+      .hero-shapes .square {
+        position: absolute;
+        top: 26px;
+        right: 90px;
+        width: 56px;
+        height: 56px;
+        background: var(--solution);
+      }
+      .hero-shapes .tri {
+        position: absolute;
+        top: 8px;
+        right: 0;
+        width: 0;
+        height: 0;
+        border-left: 32px solid transparent;
+        border-right: 32px solid transparent;
+        border-bottom: 56px solid var(--warning);
+      }
+      .hero-shapes .bar {
+        position: absolute;
+        bottom: 0;
+        right: 230px;
+        width: 100px;
+        height: 14px;
+        background: var(--text);
+      }
+
+      /* --- Scorecard / stat cards --- */
+      .scorecard,
+      .stat-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+        gap: 0;
+        margin: 1.5rem 0 2rem;
+        border: 3px solid var(--text);
+      }
+      .score-card,
+      .stat-card {
+        padding: 1.3rem 1rem;
+        text-align: center;
+        border-right: 3px solid var(--text);
+        background: var(--surface-raised);
+      }
+      .score-card:last-child,
+      .stat-card:last-child {
+        border-right: none;
+      }
+
+      .score,
+      .stat-value {
+        font-family: var(--font-heading);
+        font-size: 2.6rem;
+        font-weight: 900;
+        line-height: 1;
+        letter-spacing: -0.04em;
+      }
+      .score-card .label,
+      .stat-label {
+        font-family: var(--font-mono);
+        font-size: 0.62rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.12em;
+        margin-top: 0.5rem;
+      }
+      /* Semantic state classes — no nth-child decoration, no !important */
+      .score-good,
+      .stat-good {
+        background: var(--solution);
+        color: var(--surface);
+      }
+      .score-warn,
+      .stat-warn {
+        background: var(--warning);
+        color: var(--text);
+      }
+      .score-bad,
+      .stat-bad {
+        background: var(--problem);
+        color: var(--surface);
+      }
+
+      /* --- General cards --- */
+      .card {
+        background: var(--surface-raised);
+        border: 2px solid var(--text);
+        padding: 1.2rem 1.4rem;
+        margin-bottom: 1rem;
+        border-left: 8px solid var(--border-strong);
+      }
+      .card-problem {
+        border-left-color: var(--problem);
+      }
+      .card-solution {
+        border-left-color: var(--solution);
+      }
+      .card-warning {
+        border-left-color: var(--warning);
+      }
+
+      /* --- Issue cards --- */
+      .issue {
+        background: var(--surface-raised);
+        border: 2px solid var(--text);
+        padding: 1.2rem 1.4rem;
+        margin-bottom: 1rem;
+        border-left: 8px solid var(--border-strong);
+      }
+      .issue-critical {
+        border-left-color: var(--problem);
+      }
+      .issue-important {
+        border-left-color: var(--warning);
+      }
+      .issue-nice {
+        border-left-color: var(--solution);
+      }
+      .issue h3 {
+        margin-bottom: 0.3rem;
+      }
+      .issue .where {
+        font-family: var(--font-mono);
+        font-size: 0.78rem;
+        color: var(--text-faint);
+        margin: 0.2rem 0 0.6rem;
+      }
+      .issue p:last-child {
+        margin-bottom: 0;
+      }
+
+      /* --- Severity badges --- */
+      .severity {
+        display: inline-block;
+        font-family: var(--font-mono);
+        font-size: 0.62rem;
+        font-weight: 700;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        padding: 0.22rem 0.6rem;
+        margin-bottom: 0.6rem;
+        color: var(--surface);
+      }
+      .severity-critical {
+        background: var(--problem);
+      }
+      .severity-important {
+        background: var(--warning);
+        color: var(--text);
+      }
+      .severity-nice {
+        background: var(--solution);
+      }
+
+      /* --- Inline badges --- */
+      .badge {
+        display: inline-block;
+        font-family: var(--font-mono);
+        font-size: 0.62rem;
+        font-weight: 700;
+        letter-spacing: 0.06em;
+        text-transform: uppercase;
+        padding: 0.2rem 0.55rem;
+        border: 1px solid var(--text);
+        color: var(--text);
+      }
+      .badge-critical {
+        background: var(--problem);
+        color: var(--surface);
+      }
+      .badge-high {
+        background: var(--warning);
+      }
+      .badge-medium {
+        background: var(--surface-sunken);
+      }
+      .badge-low {
+        background: var(--surface-raised);
+        color: var(--text-muted);
+      }
+      .badge-fixed {
+        background: var(--solution);
+        color: var(--surface);
+      }
+
+      /* --- Callouts --- */
+      .callout {
+        margin: 0.8rem 0 0;
+        padding: 0.8rem 1rem;
+        border: 1px solid var(--border-strong);
+        border-left: 4px solid var(--border-strong);
+        background: var(--surface-sunken);
+        font-size: 0.92rem;
+      }
+      .callout strong {
+        display: inline-block;
+        margin-right: 0.4rem;
+      }
+      .callout-teal,
+      .callout-solution {
+        border-left-color: var(--solution);
+        background: color-mix(
+          in srgb,
+          var(--solution) 10%,
+          var(--surface-raised)
+        );
+      }
+      .callout-amber,
+      .callout-warning {
+        border-left-color: var(--warning);
+        background: color-mix(
+          in srgb,
+          var(--warning) 18%,
+          var(--surface-raised)
+        );
+      }
+
+      /* --- Strengths --- */
+      .strengths {
+        display: grid;
+        gap: 0.5rem;
+        margin: 1rem 0 1.5rem;
+      }
+      .strength {
+        display: grid;
+        grid-template-columns: auto 1fr;
+        gap: 0.9rem;
+        padding: 0.75rem 0;
+        border-bottom: 2px solid var(--border);
+      }
+      .strength .check {
+        font-family: var(--font-mono);
+        font-weight: 900;
+        color: var(--solution);
+        font-size: 1.3rem;
+        line-height: 1.3;
+      }
+      .strength .text strong {
+        display: block;
+        margin-bottom: 0.15rem;
+      }
+      .strength .text span {
+        color: var(--text-muted);
+        font-size: 0.92rem;
+      }
+
+      /* --- Tables --- */
+      .table-wrap {
+        overflow-x: auto;
+      }
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        margin: 1rem 0 1.5rem;
+        font-size: 0.92rem;
+        border: 2px solid var(--text);
+      }
+      th {
+        text-align: left;
+        padding: 0.6rem 0.9rem;
+        background: var(--text);
+        color: var(--surface);
+        font-family: var(--font-mono);
+        font-size: 0.66rem;
+        font-weight: 700;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        border-right: 1px solid var(--border-strong);
+      }
+      th:last-child {
+        border-right: none;
+      }
+      td {
+        padding: 0.6rem 0.9rem;
+        border-top: 1px solid var(--border);
+        border-right: 1px solid var(--border);
+      }
+      td:last-child {
+        border-right: none;
+      }
+      tr:nth-child(even) td {
+        background: var(--surface-sunken);
+      }
+      table.compare td.yes {
+        color: var(--solution);
+        font-weight: 700;
+      }
+      table.compare td.no {
+        color: var(--problem);
+        font-weight: 700;
+      }
+
+      /* --- Code blocks + syntax highlighting --- */
+      pre {
+        background: var(--text);
+        color: var(--surface);
+        padding: 1rem 1.2rem;
+        margin: 1rem 0;
+        font-family: var(--font-mono);
+        font-size: 0.82rem;
+        line-height: 1.65;
+        overflow-x: auto;
+        border: 2px solid var(--text);
+      }
+      code {
+        font-family: var(--font-mono);
+      }
+      p code,
+      li code,
+      td code {
+        font-size: 0.88em;
+        background: var(--surface-sunken);
+        padding: 0.1rem 0.35rem;
+      }
+      .tok-keyword {
+        color: var(--warning);
+      }
+      .tok-type {
+        color: var(--warning);
+      }
+      .tok-string {
+        color: #95e1d3;
+      }
+      .tok-comment {
+        color: rgba(244, 244, 240, 0.45);
+        font-style: italic;
+      }
+      .tok-func {
+        color: #6eb5ff;
+      }
+      .tok-number {
+        color: var(--warning);
+      }
+      .tok-generic {
+        color: var(--problem);
+      }
+      .tok-builtin {
+        color: #6eb5ff;
+      }
+      .tok-punct {
+        color: rgba(244, 244, 240, 0.7);
+      }
+      .tok-attr {
+        color: var(--warning);
+      }
+
+      /* --- Dependency tree / ASCII diagrams --- */
+      .dep-tree {
+        background: var(--surface-sunken);
+        border: 2px solid var(--text);
+        padding: 1rem 1.2rem;
+        margin: 1rem 0;
+        font-family: var(--font-mono);
+        font-size: 0.82rem;
+        line-height: 1.7;
+        white-space: pre;
+        overflow-x: auto;
+      }
+      .dep-tree .root {
+        color: var(--accent);
+        font-weight: 700;
+      }
+      .dep-tree .ok {
+        color: var(--solution);
+      }
+      .dep-tree .unwanted {
+        color: var(--problem);
+      }
+
+      /* --- Inline node-and-arrow diagrams --- */
+      .diagram {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 1rem;
+        margin: 1rem 0;
+        background: var(--surface-raised);
+        border: 2px solid var(--text);
+      }
+      .node {
+        display: inline-block;
+        padding: 0.4rem 0.75rem;
+        font-family: var(--font-mono);
+        font-size: 0.8rem;
+        font-weight: 700;
+        background: var(--surface-sunken);
+        border: 1px solid var(--text);
+      }
+      .node-core {
+        background: var(--accent);
+        color: var(--surface);
+      }
+      .node-problem {
+        background: var(--problem);
+        color: var(--surface);
+      }
+      .node-good {
+        background: var(--solution);
+        color: var(--surface);
+      }
+      .arrow {
+        color: var(--text-faint);
+        font-family: var(--font-mono);
+      }
+
+      /* --- Grids --- */
+      .grid-2 {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1rem;
+        margin: 1rem 0;
+      }
+      .grid-3 {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 1rem;
+        margin: 1rem 0;
+      }
+
+      /* --- Inline TOC --- */
+      .toc {
+        background: var(--surface-raised);
+        border: 2px solid var(--text);
+        border-left: 6px solid var(--accent);
+        padding: 1rem 1.3rem;
+        margin: 1rem 0 1.5rem;
+      }
+      .toc h3 {
+        margin-bottom: 0.5rem;
+      }
+      .toc ul {
+        list-style: none;
+        padding: 0;
+      }
+      .toc li {
+        margin: 0.25rem 0;
+      }
+      .toc a {
+        color: var(--text);
+        text-decoration: none;
+        font-size: 0.92rem;
+        font-weight: 600;
+      }
+      .toc a:hover {
+        color: var(--accent);
+      }
+
+      /* --- Migration / numbered steps --- */
+      .migration-step {
+        display: grid;
+        grid-template-columns: 56px 1fr;
+        gap: 1rem;
+        margin: 1rem 0;
+        padding: 1.1rem;
+        background: var(--surface-raised);
+        border: 2px solid var(--text);
+        border-left: 6px solid var(--accent);
+      }
+      .migration-num {
+        font-family: var(--font-mono);
+        font-weight: 900;
+        font-size: 1.8rem;
+        color: var(--accent);
+        line-height: 1;
+      }
+      .migration-content h4 {
+        margin-bottom: 0.2rem;
+      }
+      .migration-content p {
+        margin-bottom: 0;
+        color: var(--text-muted);
+        font-size: 0.94rem;
+      }
+
+      /* --- Before/After comparison --- */
+      .compare-header {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 0.75rem;
+        margin: 1rem 0 0.5rem;
+      }
+      .compare-before,
+      .compare-after {
+        font-family: var(--font-mono);
+        font-size: 0.7rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.1em;
+        padding: 0.4rem 0.7rem;
+        color: var(--surface);
+      }
+      .compare-before {
+        background: var(--problem);
+      }
+      .compare-after {
+        background: var(--solution);
+      }
+      .compare-row {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 0.75rem;
+        margin-bottom: 1rem;
+      }
+      .compare-row pre {
+        margin: 0;
+      }
+
+      /* --- Footer --- */
+      .footer {
+        margin-top: 2rem;
+        padding-top: 1rem;
+        border-top: 3px solid var(--text);
+        font-size: 0.82rem;
+        color: var(--text-muted);
+        font-family: var(--font-mono);
+      }
+
+      /* --- Responsive --- */
+      @media (min-width: 1024px) {
+        .sidebar {
+          display: block;
+        }
+      }
+      @media (max-width: 768px) {
+        .layout {
+          flex-direction: column;
+          padding: 1rem;
+        }
+        .top-bar {
+          padding: 0.6rem 1rem;
+          flex-wrap: wrap;
+          gap: 0.3rem;
+        }
+        .grid-2,
+        .grid-3 {
+          grid-template-columns: 1fr;
+        }
+        .compare-header,
+        .compare-row {
+          grid-template-columns: 1fr;
+        }
+        .scorecard,
+        .stat-grid {
+          grid-template-columns: repeat(2, 1fr);
+        }
+        .score-card:nth-child(2),
+        .stat-card:nth-child(2) {
+          border-right: none;
+        }
+        .score-card:nth-child(1),
+        .stat-card:nth-child(1),
+        .score-card:nth-child(2),
+        .stat-card:nth-child(2) {
+          border-bottom: 3px solid var(--text);
+        }
+        .migration-step {
+          grid-template-columns: 1fr;
+        }
+        .hero-shapes {
+          display: none;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Full-bleed top bar (optional — remove for quieter reports) -->
+    <div class="top-bar">
+      <span>DATA MODEL REVIEW</span>
+      <span>2026-11-22</span>
+      <span>go-legalparty</span>
+    </div>
+
+    <div class="layout">
+      <!-- Sidebar TOC (hidden below 1024px; use inline .toc if you prefer) -->
+      <aside class="sidebar" data-nav>
+        <nav>
+          <div class="label">Contents</div>
+          <a href="#current">Current state</a>
+          <a href="#catalog">Problem catalog</a>
+          <a href="#vision">The vision</a>
+          <a href="#model">Go data model</a>
+          <a href="#composition">Composition</a>
+          <a href="#validation">Validation layer</a>
+          <a href="#decisions">Decision log</a>
+          <a href="#antipatterns">Anti-patterns</a>
+          <a href="#migration">Migration</a>
+          <a href="#conclusion">Conclusion</a>
+        </nav>
+      </aside>
+
+      <!-- Main content -->
+      <main class="main">
+        <!-- Hero -->
+        <header class="hero">
+          <div class="hero-shapes">
+            <div class="bar"></div>
+            <div class="circle"></div>
+            <div class="square"></div>
+            <div class="tri"></div>
+          </div>
+          <div class="eyebrow">DATA MODEL REVIEW &middot; 2026-11-22</div>
+          <h1>The Type Model of go-legalparty</h1>
+          <p class="subtitle">
+            First-principles audit of seven branded value types and one opaque
+            struct. The model is already close to its ideal form; this review
+            catalogues the remaining rough edges, records three fixes shipped
+            during the audit, and stages one small migration.
+          </p>
+          <div class="meta">
+            <span class="tag amber">Scope: all exported types @ <code>629be18</code></span>
+            <span class="tag">Language: Go 1.27</span>
+            <span class="tag teal">Status: final</span>
+          </div>
+        </header>
+
+        <!-- Current state -->
+        <section id="current">
+          <h2><span class="num">00</span>Current state</h2>
+          <div class="stat-grid">
+            <div class="stat-card">
+              <div class="stat-value">7</div>
+              <div class="stat-label">Exported types (6 branded strings + 1 struct)</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-value">8</div>
+              <div class="stat-label">Problems catalogued</div>
+            </div>
+            <div class="stat-card stat-good">
+              <div class="stat-value">3</div>
+              <div class="stat-label">Fixed during this audit</div>
+            </div>
+            <div class="stat-card stat-warn">
+              <div class="stat-value">1</div>
+              <div class="stat-label">Open migration (small)</div>
+            </div>
+          </div>
+          <p>
+            The inventory: <code>LEI</code>, <code>VATID</code>,
+            <code>TaxNumber</code>, <code>NIP</code>,
+            <code>CountryCode</code>, <code>LegalFormClass</code> (branded
+            strings), <code>RegisterRef</code> (two-field struct). No pointers
+            anywhere, no maps-as-state, no stringly-typed enums beyond the
+            deliberate opaque <code>Registry</code> code. P1/P2/P4/P5 from the
+            standard problem taxonomy do not occur &mdash; primitive obsession
+            is the thing this library exists to prevent.
+          </p>
+        </section>
+
+        <!-- Problem catalog -->
+        <section id="catalog">
+          <h2><span class="num">01</span>Problem catalog</h2>
+          <p>Brutal-honesty pass, graded by severity and systemicity. Green badges mark what this audit fixed and pinned.</p>
+
+          <article class="card card-problem">
+            <span class="badge badge-critical">Critical &middot; fixed</span>
+            <span class="badge">systemic: rule methods</span>
+            <h3>The two class rules disagreed on invalid input</h3>
+            <div class="where">legalform.go:74 (AllowsLEI) &middot; fixed + pinned by TestLegalFormRules</div>
+            <p>
+              <code>AllowsLEI</code> answered <em>true</em> for any string that
+              was not <code>natural_person</code> &mdash; including garbage and
+              the zero value &mdash; while <code>RequiresRegistryAnchor</code>
+              answered <em>false</em> for the same input. An invalid class
+              could claim LEI eligibility while being denied a registry anchor:
+              two invariants, one input, contradictory verdicts.
+            </p>
+            <p><strong>Fix shipped:</strong> <code>AllowsLEI</code> now returns <code>c.IsValid() &amp;&amp; c != LegalFormNaturalPerson</code>. An invalid class allows nothing, mirroring its sibling rule.</p>
+          </article>
+
+          <article class="card card-problem">
+            <span class="badge badge-critical">Critical &middot; fixed</span>
+            <span class="badge">single type</span>
+            <h3>NL VAT was looser than its own error message</h3>
+            <div class="where">identifiers.go:251 (validateNLVAT) &middot; fixed + 2 new vectors</div>
+            <p>
+              The rejection message promises "9 digits, B, 2 digits", but the
+              check only verified length 12 and a B at index 9 &mdash;
+              <code>NLA23456789B01</code> passed. A validator more permissive
+              than its documentation is a contract lie in the direction that
+              matters: it accepts malformed billing data.
+            </p>
+            <p><strong>Fix shipped:</strong> the digit positions are now verified (<code>isAllDigits</code> on both sides of the B).</p>
+          </article>
+
+          <article class="card card-problem">
+            <span class="badge badge-fixed">High &middot; fixed</span>
+            <span class="badge">systemic: 5 sites</span>
+            <h3>Character-class logic duplicated across five rune loops</h3>
+            <div class="where">identifiers.go:113-159 (isAllDigits / isAllUpperAlpha / isAllUpperAlphaNumeric)</div>
+            <p>
+              "Is this all digits / uppercase letters / alphanumerics" was
+              hand-rolled in ParseLEI, ParseNIP (twice), validateTaxNumberBody,
+              isPrefixedVATShape, and ParseCountryCode. Five copies of one
+              predicate is five places to disagree on edge input.
+            </p>
+            <p><strong>Fix shipped:</strong> three named predicates, single-homed; all five sites route through them; behavior verified by the existing vectors.</p>
+          </article>
+
+          <article class="card card-problem">
+            <span class="badge badge-high">Medium &middot; open</span>
+            <span class="badge">systemic: all branded types</span>
+            <h3>Branded strings are constructible without validation</h3>
+            <div class="where">every <code>type X string</code>; invariants enforced only inside Parse*</div>
+            <p>
+              <code>VATID("garbage")</code> compiles, and the zero value
+              <code>""</code> is representable for every type. This is the
+              standard Go trade-off for string value objects &mdash; making
+              raw construction a compile error would require opaque structs
+              and cost serialization ergonomics the fleet relies on (JSON
+              round-tripping as plain strings).
+            </p>
+            <p>
+              <strong>Verdict:</strong> accepted design, not a defect. The
+              Parse functions are the boundary; the honest gap is that callers
+              holding an already-typed value have no uniform way to re-check
+              it &mdash; see the next finding.
+            </p>
+          </article>
+
+          <article class="card card-problem">
+            <span class="badge badge-high">Medium &middot; open</span>
+            <span class="badge">systemic: 4 of 7 types</span>
+            <h3>Validity surface is asymmetric</h3>
+            <div class="where">country.go:300 (CountryCode.IsValid) &middot; legalform.go:44 (LegalFormClass.IsValid) exist; LEI/VATID/TaxNumber/NIP have none</div>
+            <p>
+              Two types answer "is this value well-formed" with a method; four
+              force the caller to call <code>Parse*</code> and discard the
+              result. Worse, <code>TaxNumber</code> validity is
+              jurisdiction-relative (DE wants 10&ndash;13 digits, others
+              5&ndash;16), so a parameterless <code>IsValid()</code> would be a
+              name that lies &mdash; it needs <code>IsValidFor(cc)</code>.
+            </p>
+            <p>
+              <strong>Recommendation:</strong> add <code>IsValid()</code> to LEI/VATID/NIP and
+              <code>IsValidFor(CountryCode)</code> to TaxNumber. Staged as
+              migration M1 below; also the top deepening candidate
+              (<code>docs/architecture-understanding/2026-11-22_19-10_value-library-deepening.html</code>).
+            </p>
+          </article>
+
+          <article class="card card-warning">
+            <span class="badge badge-medium">Watch &middot; accepted</span>
+            <span class="badge">single type</span>
+            <h3>PL VATIDs are length-checked only</h3>
+            <div class="where">identifiers.go:262 (validateFixedLengthVAT)</div>
+            <p>
+              <code>ParseVATID("PL1234567890")</code> verifies shape, not the
+              NIP checksum &mdash; while <code>ParseNIP("1234567890")</code>
+              verifies both. The asymmetry is documented (FEATURES.md,
+              ROADMAP.md) and demand-gated. Recorded here so a future reviewer
+              does not "fix" it without the regulatory pass and consumer-test
+              updates AGENTS.md requires.
+            </p>
+          </article>
+        </section>
+
+        <!-- Vision -->
+        <section id="vision">
+          <h2><span class="num">02</span>The vision</h2>
+          <p>
+            Perfection for this model is boring, and that is the point: every
+            identifier parses through one verb, every typed value can answer
+            whether it is well-formed through one idiom, every rejection path
+            carries a pinned machine code, and no invariant is enforced in more
+            than one place. After this audit's fixes, the only missing piece is
+            the uniform validity surface (M1).
+          </p>
+          <div class="callout callout-teal">
+            <strong>What the model must never become</strong>
+            No pointer fields, no option structs, no separate "draft"/"validated"
+            lifecycle states on the value types &mdash; the CQRS aggregate in
+            <code>cqrs-htmx/legalparty-model</code> owns lifecycle; this library
+            owns types, parsing, checksums, nothing else (AGENTS.md scope boundary).
+          </div>
+        </section>
+
+        <!-- Go data model -->
+        <section id="model">
+          <h2><span class="num">03</span>Go data model</h2>
+          <p>The shape as it stands after the audit's fixes, with the proposed M1 surface in the second block.</p>
+          <pre><code><span class="tok-comment">// Branded strings: distinct types, plain JSON, Parse as the gate.</span>
+<span class="tok-keyword">type</span> <span class="tok-type">LEI</span> <span class="tok-type">string</span>            <span class="tok-comment">// ISO 17442, mod-97 == 1</span>
+<span class="tok-keyword">type</span> <span class="tok-type">VATID</span> <span class="tok-type">string</span>          <span class="tok-comment">// canonical EU-prefixed form</span>
+<span class="tok-keyword">type</span> <span class="tok-type">TaxNumber</span> <span class="tok-type">string</span>      <span class="tok-comment">// no country prefix, ever</span>
+<span class="tok-keyword">type</span> <span class="tok-type">NIP</span> <span class="tok-type">string</span>            <span class="tok-comment">// bare 10 digits, weights 657234567</span>
+<span class="tok-keyword">type</span> <span class="tok-type">CountryCode</span> <span class="tok-type">string</span>    <span class="tok-comment">// assigned ISO 3166-1 alpha-2 only</span>
+<span class="tok-keyword">type</span> <span class="tok-type">LegalFormClass</span> <span class="tok-type">string</span> <span class="tok-comment">// five peers, closed set</span>
+
+<span class="tok-comment">// The one struct: Registry stays opaque by design.</span>
+<span class="tok-keyword">type</span> <span class="tok-type">RegisterRef</span> <span class="tok-keyword">struct</span> {
+    Registry <span class="tok-type">string</span> <span class="tok-string">`json:"registry"`</span>
+    Number   <span class="tok-type">string</span> <span class="tok-string">`json:"number"`</span>
+}</code></pre>
+          <pre><code><span class="tok-comment">// M1 (proposed): one validity idiom per type. TaxNumber is</span>
+<span class="tok-comment">// jurisdiction-relative, so its method says so in its name.</span>
+<span class="tok-keyword">func</span> (l <span class="tok-type">LEI</span>) <span class="tok-func">IsValid</span>() <span class="tok-type">bool</span>
+<span class="tok-keyword">func</span> (v <span class="tok-type">VATID</span>) <span class="tok-func">IsValid</span>() <span class="tok-type">bool</span>
+<span class="tok-keyword">func</span> (n <span class="tok-type">NIP</span>) <span class="tok-func">IsValid</span>() <span class="tok-type">bool</span>
+<span class="tok-keyword">func</span> (t <span class="tok-type">TaxNumber</span>) <span class="tok-func">IsValidFor</span>(cc <span class="tok-type">CountryCode</span>) <span class="tok-type">bool</span>
+
+<span class="tok-comment">// Each implementation is exactly Parse-and-discard, so the</span>
+<span class="tok-comment">// predicates can never drift from the parsers they mirror.</span></code></pre>
+        </section>
+
+        <!-- Composition -->
+        <section id="composition">
+          <h2><span class="num">04</span>Composition in action</h2>
+          <p>The types already compose along the domain's real joints; nothing was forced.</p>
+          <table class="compare">
+            <thead>
+              <tr>
+                <th>Joint</th>
+                <th>How it composes</th>
+                <th>Guarded by</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>VATID &rarr; CountryCode</td>
+                <td>Prefix parse rejects unassigned codes before the national part is examined</td>
+                <td>identifiers.go:170</td>
+              </tr>
+              <tr>
+                <td>VATID PL &harr; NIP</td>
+                <td>Same 10 digits, two distinct types: prefixed canonical vs bare checksummed</td>
+                <td>type separation doctrine (AGENTS.md)</td>
+              </tr>
+              <tr>
+                <td>LegalFormClass &rarr; LEI / RegisterRef</td>
+                <td>Class rules decide whether a profile needs an anchor at all</td>
+                <td>legalform.go:58, :74</td>
+              </tr>
+              <tr>
+                <td>TaxNumber &larr; VATID-shape</td>
+                <td>Prefixed input is routed to ParseVATID instead of silently accepted</td>
+                <td>taxnumber.go:28 (<code>legalparty.tax_number.vat_shape</code>)</td>
+              </tr>
+            </tbody>
+          </table>
+        </section>
+
+        <!-- Validation layer -->
+        <section id="validation">
+          <h2><span class="num">05</span>Validation layer: how invalid states are handled</h2>
+          <p>
+            Invalid states are not unrepresentable &mdash; Go strings make that
+            impossible without opaque-struct costs &mdash; but they are
+            <em>unusable</em>: every boundary rejects them with a stable code,
+            and after this audit every rule answers unknown input with
+            "deny". The rejection codes are the layer's public contract:
+          </p>
+          <table class="compare">
+            <thead>
+              <tr>
+                <th>Family</th>
+                <th>Codes</th>
+                <th>Pinned by</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td>LEI</td><td>lei.invalid, lei.checksum_failed</td><td class="yes">TestParseLEI</td></tr>
+              <tr><td>VATID</td><td>vat_id.required, vat_id.prefix_invalid, vat_id.national_invalid, vat_id.checksum_failed</td><td class="yes">TestParseVATID</td></tr>
+              <tr><td>NIP</td><td>nip.invalid, nip.checksum_failed</td><td class="yes">TestParseNIP</td></tr>
+              <tr><td>TaxNumber</td><td>tax_number.required, tax_number.vat_shape, tax_number.national_invalid</td><td class="no">unpinned (M2)</td></tr>
+              <tr><td>RegisterRef</td><td>register.registry_required, register.number_required</td><td class="no">unpinned (M2)</td></tr>
+              <tr><td>Country / LegalForm</td><td>country.invalid, country.unassigned, legal_form.invalid</td><td class="yes">TestParseCountryCodeAndLegalForm</td></tr>
+            </tbody>
+          </table>
+        </section>
+
+        <!-- Decision log -->
+        <section id="decisions">
+          <h2><span class="num">06</span>Decision log</h2>
+          <table class="compare">
+            <thead>
+              <tr>
+                <th>Decision</th>
+                <th>Alternative rejected</th>
+                <th>Why</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Branded strings, not opaque structs</td>
+                <td>Struct wrappers with private fields</td>
+                <td>Plain JSON round-tripping; the fleet aliases these types across repos</td>
+              </tr>
+              <tr>
+                <td>RegisterRef.Registry is a plain string</td>
+                <td>A Registry branded type with known codes</td>
+                <td>The domain never inspects registry semantics &mdash; the resolver owns them (DOMAIN_LANGUAGE.md anti-language)</td>
+              </tr>
+              <tr>
+                <td>LegalFormClass as string enum with IsValid</td>
+                <td>iota ints</td>
+                <td>The literal values ("legal_entity", ...) are persisted and cross-repo; integer codes would need a mapping layer</td>
+              </tr>
+              <tr>
+                <td>AllowsLEI denies invalid classes (this audit)</td>
+                <td>Keep <code>c != natural_person</code></td>
+                <td>Two rules must not disagree on the same input; deny-on-unknown matches RequiresRegistryAnchor</td>
+              </tr>
+              <tr>
+                <td>TaxNumber validity is jurisdiction-relative</td>
+                <td>Parameterless IsValid</td>
+                <td>A parameterless check could only enforce the generic 5&ndash;16 shape and would lie for DE</td>
+              </tr>
+            </tbody>
+          </table>
+        </section>
+
+        <!-- Anti-patterns -->
+        <section id="antipatterns">
+          <h2><span class="num">07</span>Anti-patterns to avoid here</h2>
+          <div class="card card-warning">
+            <h4>Do not merge VATID and TaxNumber</h4>
+            <p>The conflation is the cautionary tale that motivated this library: one type for both rejects valid values on both sides.</p>
+          </div>
+          <div class="card card-warning">
+            <h4>Do not "fix" the NIP remainder-10 edge</h4>
+            <p>Mapping remainder 10 to check digit 0 is the bug class this library exists to prevent. The edge is regulation, not an oversight.</p>
+          </div>
+          <div class="card card-warning">
+            <h4>Do not validate inside getters on every call</h4>
+            <p>Parse is the gate; per-access re-validation would hide cost in hot paths and blur where the contract lives. M1's IsValid is explicit and caller-initiated.</p>
+          </div>
+          <div class="card card-warning">
+            <h4>Do not add pointer-optional fields to RegisterRef</h4>
+            <p>Optional registry or number would smuggle "state" into a value pair whose whole job is to be complete or rejected.</p>
+          </div>
+        </section>
+
+        <!-- Migration -->
+        <section id="migration">
+          <h2><span class="num">08</span>Migration roadmap</h2>
+          <div class="migration-step">
+            <div class="migration-num">1</div>
+            <div class="migration-content">
+              <h4>Uniform validity surface (S)</h4>
+              <p>Add IsValid to LEI/VATID/NIP, IsValidFor(cc) to TaxNumber, with vectors. Awaited only because it is the deepening brief's candidate &mdash; the design is settled.</p>
+            </div>
+          </div>
+          <div class="migration-step">
+            <div class="migration-num">2</div>
+            <div class="migration-content">
+              <h4>Pin TaxNumber + RegisterRef vectors (S)</h4>
+              <p>One wantCode per rejection path. Tracked in TODO_LIST (High); closes the last two unpinned code families.</p>
+            </div>
+          </div>
+          <div class="migration-step">
+            <div class="migration-num">3</div>
+            <div class="migration-content">
+              <h4>REGON as its own per-concept file (M)</h4>
+              <p>Weights 8-9-2-3-4-5-6-7 mod 11, remainder 10 &rarr; check digit 0 (the opposite edge from NIP). Then delete company-master-data's local copy.</p>
+            </div>
+          </div>
+          <div class="migration-step">
+            <div class="migration-num">4</div>
+            <div class="migration-content">
+              <h4>Fuzz the checksum parsers (M)</h4>
+              <p>ParseNIP/ParseVATID/ParseLEI/ParseTaxNumber/ParseTaxNumberBody; fleet pattern is go-error-family's 16 targets. Tracked in TODO_LIST (Medium).</p>
+            </div>
+          </div>
+        </section>
+
+        <!-- Conclusion -->
+        <section id="conclusion">
+          <h2><span class="num">09</span>Conclusion</h2>
+          <div class="callout callout-amber">
+            <strong>The model in one sentence</strong>
+            Seven branded types whose types <em>are</em> the fleet's vocabulary,
+            whose parsers are the only gate, whose rejection codes never lie &mdash;
+            and after today, whose rules cannot disagree about input they do not
+            understand.
+          </div>
+        </section>
+
+        <footer class="footer">
+          <p>
+            Generated 2026-11-22 &middot; Reviewed against commit 629be18
+            &middot; First report in the docs/reviews/ series &middot;
+            Cross-references: architecture review 2026-11-22_19-05, deepening brief 2026-11-22_19-10
+          </p>
+        </footer>
+      </main>
+    </div>
+
+    <!-- Progressive-enhancement scrollspy. Nav still works without JS via anchor links. -->
+    <script>
+      (function () {
+        if (!("IntersectionObserver" in window)) return;
+        var nav = document.querySelector("[data-nav]");
+        if (!nav) return;
+        var links = nav.querySelectorAll('a[href^="#"]');
+        var ids = Array.from(links).map(function (l) {
+          return l.getAttribute("href").slice(1);
+        });
+        var sections = ids
+          .map(function (id) {
+            return document.getElementById(id);
+          })
+          .filter(Boolean);
+        if (!sections.length) return;
+        var observer = new IntersectionObserver(
+          function (entries) {
+            entries.forEach(function (entry) {
+              if (entry.isIntersecting) {
+                links.forEach(function (link) {
+                  link.classList.toggle(
+                    "active",
+                    link.getAttribute("href") === "#" + entry.target.id,
+                  );
+                });
+              }
+            });
+          },
+          { rootMargin: "-80px 0px -60% 0px", threshold: 0 },
+        );
+        sections.forEach(function (s) {
+          observer.observe(s);
+        });
+      })();
+    </script>
+  </body>
+</html>
