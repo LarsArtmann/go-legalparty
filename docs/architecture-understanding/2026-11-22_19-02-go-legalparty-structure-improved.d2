@@ -7,7 +7,8 @@ fleet: Consumers (fleet) {
 }
 
 lib: "github.com/larsartmann/go-legalparty (single module, single package - shape unchanged)" {
-  identifiers: "identifiers.go - VATID, TaxNumber, LEI, RegisterRef"
+  identifiers: "identifiers.go - VATID, LEI, RegisterRef"
+  taxnumber: "taxnumber.go - TaxNumber"
   nip: "nip.go - NIP"
   regon: "REGON (9/14-digit weighted mod 11)" {
     style.stroke-dash: 4

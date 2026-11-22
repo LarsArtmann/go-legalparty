@@ -282,7 +282,7 @@ type CountryCode string
 // assigned by ISO 3166-1.
 func ParseCountryCode(s string) (CountryCode, error) {
 	v := strings.ToUpper(strings.TrimSpace(s))
-	if len(v) != 2 || v[0] < 'A' || v[0] > 'Z' || v[1] < 'A' || v[1] > 'Z' {
+	if len(v) != 2 || !isAllUpperAlpha(v) {
 		return "", errorfamily.NewRejection("legalparty.country.invalid",
 			"invalid country code "+s+" (want an ISO 3166-1 alpha-2 code)")
 	}

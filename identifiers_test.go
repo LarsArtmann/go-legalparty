@@ -88,6 +88,8 @@ func TestParseVATID(t *testing.T) {
 		{"austrian UID format", "ATU13585627", "ATU13585627", ""},
 		{"polish NIP-shaped VAT", "PL1234567890", "PL1234567890", ""},
 		{"dutch BTW", "NL123456789B01", "NL123456789B01", ""},
+		{"dutch letters in digit positions", "NLA23456789B01", "", "legalparty.vat_id.national_invalid"},
+		{"dutch B misplaced", "NL123456B78901", "", "legalparty.vat_id.national_invalid"},
 		{"generic EU form", "FR12345678901", "FR12345678901", ""},
 		{"no country prefix", "136695976", "", "legalparty.vat_id.prefix_invalid"},
 		{"unassigned prefix", "ZZ123456789", "", "legalparty.vat_id.prefix_invalid"},
@@ -190,5 +192,41 @@ func TestParseCountryCodeAndLegalForm(t *testing.T) {
 
 	if _, err := ParseLegalFormClass("corp"); err == nil {
 		t.Fatal("unknown legal form class must reject")
+	}
+}
+
+// The rule vectors pin both class rules for every defined value AND for
+// values that never passed ParseLegalFormClass: an invalid class must
+// allow nothing, so the two rules cannot disagree on unknown input.
+func TestLegalFormRules(t *testing.T) {
+	t.Parallel()
+
+	tests := []struct {
+		name       string
+		class      LegalFormClass
+		wantAnchor bool
+		wantLEI    bool
+	}{
+		{"natural person", LegalFormNaturalPerson, false, false},
+		{"legal entity", LegalFormLegalEntity, true, true},
+		{"partnership", LegalFormPartnership, true, true},
+		{"public body", LegalFormPublicBody, false, true},
+		{"non-profit", LegalFormNonProfit, false, true},
+		{"empty zero value", "", false, false},
+		{"unknown class", LegalFormClass("corp"), false, false},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			t.Parallel()
+
+			if got := tt.class.RequiresRegistryAnchor(); got != tt.wantAnchor {
+				t.Fatalf("RequiresRegistryAnchor(%q) = %v, want %v", tt.class, got, tt.wantAnchor)
+			}
+
+			if got := tt.class.AllowsLEI(); got != tt.wantLEI {
+				t.Fatalf("AllowsLEI(%q) = %v, want %v", tt.class, got, tt.wantLEI)
+			}
+		})
 	}
 }

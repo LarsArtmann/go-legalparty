@@ -21,10 +21,10 @@ Every label answers ONE question: does working code exist — and if not, why no
 | Feature                                                           | Status                    | Evidence                                                    | Notes                                                                                            |
 | ----------------------------------------------------------------- | ------------------------- | ----------------------------------------------------------- | ------------------------------------------------------------------------------------------------ |
 | NIP parsing + weighted checksum                                   | 🟢 `FULLY_FUNCTIONAL`     | `nip.go`; `TestParseNIP` pins MoF 5260000152                | Remainder-10-invalid edge pinned — the bug this extraction fixed                                 |
-| VATID parsing (DE checksum, NL/AT/PL shapes, generic EU fallback) | 🟢 `FULLY_FUNCTIONAL`     | `identifiers.go:121`; `TestParseVATID` pins BMF example     | Only DE carries a real checksum; other jurisdictions are format-checked (by design, see ROADMAP) |
+| VATID parsing (DE checksum, NL/AT/PL shapes, generic EU fallback) | 🟢 `FULLY_FUNCTIONAL`     | `identifiers.go:167`; `TestParseVATID` pins BMF example     | Only DE carries a real checksum; other jurisdictions are format-checked (by design, see ROADMAP) |
 | LEI parsing (ISO 17442 mod-97)                                    | 🟢 `FULLY_FUNCTIONAL`     | `identifiers.go:17`; `TestParseLEI` pins live GLEIF records | Case-normalized; 20 chars [A-Z0-9]                                                               |
-| TaxNumber parsing (DE 10-13 digits, generic 5-16)                 | 🟡 `PARTIALLY_FUNCTIONAL` | `identifiers.go:261`                                        | Works, but zero test vectors — rejection codes `tax_number.*` unpinned (TODO_LIST)               |
-| RegisterRef construction + validation                             | 🟡 `PARTIALLY_FUNCTIONAL` | `identifiers.go:68`                                         | Works, but zero test vectors — codes `register.*` unpinned (TODO_LIST)                           |
+| TaxNumber parsing (DE 10-13 digits, generic 5-16)                 | 🟡 `PARTIALLY_FUNCTIONAL` | `taxnumber.go:12`                                           | Works, but zero test vectors — rejection codes `tax_number.*` unpinned (TODO_LIST)               |
+| RegisterRef construction + validation                             | 🟡 `PARTIALLY_FUNCTIONAL` | `identifiers.go:66`                                         | Works, but zero test vectors — codes `register.*` unpinned (TODO_LIST)                           |
 
 ## Classifiers
 

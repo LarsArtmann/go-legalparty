@@ -68,7 +68,9 @@ func (c LegalFormClass) RequiresRegistryAnchor() bool {
 
 // AllowsLEI reports whether a party of this class can hold a Legal Entity
 // Identifier. GLEIF's scope covers legal entities only: natural persons
-// (including sole traders) cannot hold a LEI.
+// (including sole traders) cannot hold a LEI. An invalid class (anything
+// outside the five defined values) allows nothing, mirroring
+// [LegalFormClass.RequiresRegistryAnchor].
 func (c LegalFormClass) AllowsLEI() bool {
-	return c != LegalFormNaturalPerson
+	return c.IsValid() && c != LegalFormNaturalPerson
 }

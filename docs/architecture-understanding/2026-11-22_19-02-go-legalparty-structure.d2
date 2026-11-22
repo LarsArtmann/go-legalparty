@@ -7,7 +7,8 @@ fleet: Consumers (fleet) {
 }
 
 lib: "github.com/larsartmann/go-legalparty (single module, single package)" {
-  identifiers: "identifiers.go - VATID, TaxNumber, LEI, RegisterRef"
+  identifiers: "identifiers.go - VATID, LEI, RegisterRef"
+  taxnumber: "taxnumber.go - TaxNumber"
   nip: "nip.go - NIP"
   country: "country.go - CountryCode + ISO 3166-1 table"
   legalform: "legalform.go - LegalFormClass + rule methods"

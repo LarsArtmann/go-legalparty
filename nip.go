@@ -26,21 +26,15 @@ func ParseNIP(s string) (NIP, error) {
 
 	weights := [9]int{6, 5, 7, 2, 3, 4, 5, 6, 7}
 
+	if !isAllDigits(v) {
+		return "", errorfamily.NewRejection("legalparty.nip.invalid",
+			"a Polish NIP carries digits only, got "+s)
+	}
+
 	sum := 0
 
 	for i := range 9 {
-		d := v[i]
-		if d < '0' || d > '9' {
-			return "", errorfamily.NewRejection("legalparty.nip.invalid",
-				"a Polish NIP carries digits only, got "+s)
-		}
-
-		sum += int(d-'0') * weights[i]
-	}
-
-	if v[9] < '0' || v[9] > '9' {
-		return "", errorfamily.NewRejection("legalparty.nip.invalid",
-			"a Polish NIP carries digits only, got "+s)
+		sum += int(v[i]-'0') * weights[i]
 	}
 
 	// Remainder 10 is INVALID by Polish regulation (the checksum space

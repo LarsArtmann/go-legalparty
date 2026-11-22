@@ -5,7 +5,7 @@ Pure Go value library: legal-party identifier types with real checksums
 the DE/PL/EU billing domain. Extracted from `cqrs-htmx/legalparty-model`
 per ADR-0001 (history in CHANGELOG). Single flat package
 `github.com/larsartmann/go-legalparty`, root-level files per concept
-(`identifiers.go`, `nip.go`, `country.go`, `legalform.go`).
+(`identifiers.go`, `taxnumber.go`, `nip.go`, `country.go`, `legalform.go`).
 
 ## Scope boundary (the most important rule)
 
