@@ -28,11 +28,11 @@ Every label answers ONE question: does working code exist — and if not, why no
 
 ## Classifiers
 
-| Feature                                        | Status                    | Evidence                                         | Notes                                                      |
-| ---------------------------------------------- | ------------------------- | ------------------------------------------------ | ---------------------------------------------------------- |
-| CountryCode (assigned ISO 3166-1 alpha-2 only) | 🟢 `FULLY_FUNCTIONAL`     | `country.go`; `TestParseCountryCodeAndLegalForm` | XK/EU/ZZ deliberately rejected                             |
-| LegalFormClass parsing (5 values)              | 🟢 `FULLY_FUNCTIONAL`     | `legalform.go`; same test                        | Unknown classes rejected with the valid set in the message |
-| Registry-anchor & LEI-eligibility rules        | 🟡 `PARTIALLY_FUNCTIONAL` | `legalform.go:58`, `legalform.go:73`             | `RequiresRegistryAnchor`/`AllowsLEI` untested (TODO_LIST)  |
+| Feature                                        | Status                | Evidence                                                   | Notes                                                                                          |
+| ---------------------------------------------- | --------------------- | ---------------------------------------------------------- | ---------------------------------------------------------------------------------------------- |
+| CountryCode (assigned ISO 3166-1 alpha-2 only) | 🟢 `FULLY_FUNCTIONAL` | `country.go`; `TestParseCountryCodeAndLegalForm`           | XK/EU/ZZ deliberately rejected                                                                 |
+| LegalFormClass parsing (5 values)              | 🟢 `FULLY_FUNCTIONAL` | `legalform.go`; same test                                  | Unknown classes rejected with the valid set in the message                                     |
+| Registry-anchor & LEI-eligibility rules        | 🟢 `FULLY_FUNCTIONAL` | `legalform.go:58`, `legalform.go:73`; `TestLegalFormRules` | Both rules pinned for all five classes and for invalid input (an unknown class allows nothing) |
 
 **Created:** 2026-11-22 · docs-health BUILD pass, then AUDIT-verified (agent,
 glm-5.3) · basis: code sweep + `go test ./...` green; counts computed from
