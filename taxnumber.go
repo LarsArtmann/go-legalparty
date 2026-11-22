@@ -54,10 +54,14 @@ func validateTaxNumberBody(country CountryCode, v string) error {
 	return nil
 }
 
+// minVATPrefixedLength is the shortest string the VAT shape can be:
+// a two-letter country prefix plus at least one digit.
+const minVATPrefixedLength = 3
+
 // isPrefixedVATShape reports whether the value is a two-letter country
 // prefix followed by digits only, the canonical VAT ID shape.
 func isPrefixedVATShape(v string) bool {
-	if len(v) < 3 {
+	if len(v) < minVATPrefixedLength {
 		return false
 	}
 

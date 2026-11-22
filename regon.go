@@ -40,6 +40,13 @@ func ParseRegon(s string) (Regon, error) {
 	return Regon(v), nil
 }
 
+// Spec constants, named as in the fleet's consumer copies: the numbers
+// encode regulation edges, not tuning knobs.
+const (
+	regonModulus       = 11 // REGON weighted checksum modulus
+	regonZeroRemainder = 10 // remainder 10 encodes check digit 0 (anti-NIP edge)
+)
+
 // validRegonChecksum checks the first nine digits of either form. The
 // 14-digit serial is deliberately NOT checked against the documented
 // 13-weight scheme: KRS-published branch REGONs (real master data) falsify
@@ -56,8 +63,8 @@ func validRegonChecksum(nine string) bool {
 
 	// Remainder 10 encodes check digit 0 — the opposite edge from NIP,
 	// where the same remainder is invalid outright.
-	check := sum % 11
-	if check == 10 {
+	check := sum % regonModulus
+	if check == regonZeroRemainder {
 		check = 0
 	}
 

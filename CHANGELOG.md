@@ -11,6 +11,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - `Regon` type with `ParseRegon`: the Polish business registry identifier in both forms — 9-digit entity and 14-digit local unit (checksum weights 8-9-2-3-4-5-6-7 mod 11 over the parent prefix). Remainder 10 encodes check digit 0, the opposite regulation edge from NIP; the 14-digit serial is deliberately not checked against the documented 13-weight scheme (KRS-published branch records falsify it). Vectors pin algorytm.org's official numbers, real KRS odpis records, and the remainder-10 edge in both directions.
 - `TestParseTaxNumber` (18 vectors): all three `tax_number.*` rejection codes, the DE 10-13 digit bounds, generic-jurisdiction 5-16 bounds, separator stripping, and the VAT-shape refusal — including the lowercase-prefix and country-independent cases. `TestNewRegisterRef`: both `register.*` rejection codes, constructor trimming, and the zero-value `Validate` ordering. Every shipped parse path now carries vectors; FEATURES shows zero `PARTIALLY_FUNCTIONAL` rows.
 - Released v0.1.1 (2026-11-22): corrected SECURITY.md advisory URL, truthful README table, legal-form and Dutch-VAT rule fixes.
+- CI workflow (`.github/workflows/ci.yml`): race-enabled tests, go vet, govulncheck, golangci-lint, a consumer-import simulation, dprint docs-format check, and the fleet cue workflow-policy vet — every push and PR now gated; SECURITY.md's scanning claim is true.
+- `.config/**` excluded from dprint (machine-managed project-meta metadata, not project docs — `dprint check` passes bare, which CI relies on).
 
 ### Fixed
 

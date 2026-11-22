@@ -4,7 +4,7 @@
 
 | Version | Supported  |
 | ------- | ---------- |
-| v0.1.0  | ✅ Current |
+| v0.1.1  | ✅ Current |
 
 Only the latest release receives security fixes. Please update to the latest
 version before reporting issues found in older releases.
@@ -34,7 +34,7 @@ Please do **not** open public issues for security problems. Report privately ins
 
 - All changes are code-reviewed before merge
 - Dependencies are kept up to date (Dependabot, weekly)
-- Automated scanning in CI is planned (no workflows yet — see TODO_LIST)
+- CI runs on every push and pull request: race-enabled tests, go vet, govulncheck, golangci-lint (gosec enabled), and a consumer-import simulation
 
 ---
 

@@ -10,6 +10,8 @@ import (
 // country codes. User-assigned, transitional-reservation and
 // exceptionally-reserved codes (XK for Kosovo, EU, ZZ, ...) are deliberately
 // absent: a billing jurisdiction must resolve to an assigned country.
+//
+//nolint:gochecknoglobals // hand-maintained ISO spec table; a copy per call would hide the spec from readers
 var assignedCountryCodes = []string{
 	"AD",
 	"AE",
@@ -262,6 +264,7 @@ var assignedCountryCodes = []string{
 	"ZW",
 }
 
+//nolint:gochecknoglobals // set-once lookup index over the spec table above
 var countryCodeSet = buildCountryCodeSet()
 
 func buildCountryCodeSet() map[string]struct{} {
