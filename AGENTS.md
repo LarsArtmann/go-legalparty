@@ -29,6 +29,11 @@ No `flake.nix`, no Makefile, no justfile — plain Go module on purpose.
 - Fuzz: `fuzz_test.go` carries seed-corpus targets (NIP, Regon, VATID, LEI,
   TaxNumber); CI runs seeds only — local `-fuzz` runs are on-demand.
 - Vet: `go vet ./...`
+- Canonical facts: `bash scripts/check-canonical-facts.sh .` — pins
+  README/FEATURES validation-semantics rows to the code anchors that make
+  them true (weights, remainder edges, class list, fixed lengths). Runs as
+  its own CI job; docs edits touching validation semantics must keep it
+  green. Absence checks cover the three drifts that burned a session.
 - Quality gate: `buildflow` — this repo is covered (the `.gitignore` block is
   buildflow-managed) but has no `.buildflow.yml`, so defaults apply. Use
   `buildflow --fix` for repairs, `buildflow -s <tool> --format finding` to

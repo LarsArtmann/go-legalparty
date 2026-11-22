@@ -82,6 +82,18 @@ jobs:
       - name: Check markdown/json/yaml formatting
         run: ~/.dprint/bin/dprint check
 
+  # The canonical-facts drift gate: README/FEATURES validation-semantics
+  # rows are pinned to the code anchors that make them true. The README
+  # table once drifted for a full session while claiming "verified"; this
+  # job makes that drift class fail CI instead.
+  canonical-facts:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+
+      - name: Check canonical facts (docs ↔ code)
+        run: bash scripts/check-canonical-facts.sh .
+
   # Fleet workflow policy (same pin as go-error-family, adopted
   # 2026-11-02): external cue schemas vet the workflow files for the
   # policy classes actionlint has no concept of — action pin formats,
