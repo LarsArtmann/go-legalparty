@@ -87,7 +87,10 @@ type RegisterRef struct {
 	Number   string `json:"number"`
 }
 
-// NewRegisterRef validates and constructs a RegisterRef.
+// NewRegisterRef validates and constructs a RegisterRef. It is the
+// normalization point: both halves are trimmed of surrounding
+// whitespace before the presence check, so the stored pair is canonical
+// (interior whitespace is kept — registry entry numbers carry it).
 func NewRegisterRef(registry, number string) (RegisterRef, error) {
 	r := RegisterRef{Registry: strings.TrimSpace(registry), Number: strings.TrimSpace(number)}
 	if err := r.Validate(); err != nil {
@@ -97,7 +100,11 @@ func NewRegisterRef(registry, number string) (RegisterRef, error) {
 	return r, nil
 }
 
-// Validate enforces that both the registry code and the number are present.
+// Validate enforces that both the registry code and the number are
+// present. It is a presence check, not a normalization point: values with
+// surrounding whitespace pass (a raw struct predating the constructor is
+// not made invalid by it), and Validate never mutates. Use
+// NewRegisterRef to store canonical, trimmed pairs.
 func (r RegisterRef) Validate() error {
 	if strings.TrimSpace(r.Registry) == "" {
 		return errorfamily.NewRejection("legalparty.register.registry_required",
@@ -204,6 +211,11 @@ func ParseVATID(s string) (VATID, error) {
 	}
 
 	national := v[2:]
+	// Austria's UID officially writes as ATU + 8 digits: the leading U is
+	// display format, not part of the identifier. Strip it so the 8-digit
+	// fixed-length shape check applies uniformly to ATU-form and bare
+	// digits input; the stored canonical form keeps the U out only of the
+	// shape check — VATID(v) still stores the caller's prefixed spelling.
 	if cc == "AT" && len(national) > 0 && national[0] == 'U' {
 		national = national[1:]
 	}

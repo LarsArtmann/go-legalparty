@@ -282,4 +282,22 @@ func TestNewRegisterRef(t *testing.T) {
 			t.Fatalf("error code: got %q, want legalparty.register.registry_required", code)
 		}
 	})
+
+	t.Run("raw struct validate tolerates untrimmed input", func(t *testing.T) {
+		t.Parallel()
+
+		// Trim semantics, pinned both ways: the constructor is the
+		// normalization point (trims, per the happy-path vector above);
+		// Validate is presence-only — it accepts surrounding whitespace
+		// and never mutates, so a raw struct predating the constructor
+		// stays valid.
+		r := RegisterRef{Registry: " HRB ", Number: " 12345 "}
+		if err := r.Validate(); err != nil {
+			t.Fatalf("Validate must accept untrimmed values: %v", err)
+		}
+
+		if r.Registry != " HRB " || r.Number != " 12345 " {
+			t.Fatalf("Validate must not mutate: got %+v", r)
+		}
+	})
 }
