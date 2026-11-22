@@ -4,7 +4,7 @@ All notable changes. Dates are 2026 unless stated.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
-## [Unreleased]
+## [v0.1.1] - 2026-11-22
 
 ### Added
 
