@@ -7,6 +7,22 @@ import (
 	errorfamily "github.com/larsartmann/go-error-family"
 )
 
+// Spec constants for the identifier checksums: named so the regulation
+// numbers they encode stay greppable next to their use sites.
+const (
+	leiLength  = 20 // ISO 17442: a LEI is exactly 20 characters
+	leiModulus = 97 // ISO 17442: mod-97 check over the mapped string
+	letterBase = 10 // ISO 17442: letters map A=10 .. Z=35
+
+	minVATIDLength = 3 // two-letter country prefix plus at least one digit
+	deVATLength    = 9 // German USt-IdNr. national part is 9 digits
+
+	iso7064Seed   = 5  // ISO 7064 Mod 11,10 seed (python-stdnum reference)
+	iso7064Weight = 2  // ISO 7064 Mod 11,10 digit weight
+	iso7064Mod11  = 11 // ISO 7064 Mod 11,10 intermediate modulus
+	iso7064Mod10  = 10 // ISO 7064 Mod 11,10 final radix
+)
+
 // LEI is a Legal Entity Identifier (ISO 17442): a 20-character,
 // globally unique identifier for legal entities that participate in
 // financial transactions, issued under GLEIF governance. The final two
@@ -21,7 +37,7 @@ type LEI string
 // ISO 17442 mod-97 checksum.
 func ParseLEI(s string) (LEI, error) {
 	v := strings.ToUpper(strings.TrimSpace(s))
-	if len(v) != 20 {
+	if len(v) != leiLength {
 		return "", errorfamily.NewRejection("legalparty.lei.invalid",
 			"a LEI is exactly 20 characters, got "+strconv.Itoa(len(v))+" in "+s)
 	}
@@ -48,11 +64,11 @@ func validLEIChecksum(code string) bool {
 	for _, r := range code {
 		switch {
 		case r >= '0' && r <= '9':
-			remainder = (remainder*10 + int(r-'0')) % 97
+			remainder = (remainder*10 + int(r-'0')) % leiModulus
 		case r >= 'A' && r <= 'Z':
-			v := int(r-'A') + 10
-			remainder = (remainder*10 + v/10) % 97
-			remainder = (remainder*10 + v%10) % 97
+			v := int(r-'A') + letterBase
+			remainder = (remainder*10 + v/10) % leiModulus
+			remainder = (remainder*10 + v%10) % leiModulus
 		default:
 			return false
 		}
@@ -176,7 +192,7 @@ type VATID string
 // ParseVATID validates and constructs a VATID in canonical prefixed form.
 func ParseVATID(s string) (VATID, error) {
 	v := normalizeTaxIdentifier(s)
-	if len(v) < 3 {
+	if len(v) < minVATIDLength {
 		return "", errorfamily.NewRejection("legalparty.vat_id.required",
 			"a VAT ID carries a country prefix and a national part, got "+s)
 	}
@@ -243,7 +259,7 @@ func validateVATLength(cc CountryCode, national string) error {
 }
 
 func validateDEVAT(national string) error {
-	if len(national) != 9 {
+	if len(national) != deVATLength {
 		return errorfamily.NewRejection("legalparty.vat_id.national_invalid",
 			"a German USt-IdNr. is DE followed by exactly 9 digits")
 	}
@@ -302,17 +318,17 @@ func validateGenericVAT(national string) error {
 // Verified vectors: BMF/BZSt example DE136695976 validates, DE136695978
 // fails, calc('79462') == '3', calc('00200667308') == '5'.
 func validDEVATChecksum(national string) bool {
-	check := 5
+	check := iso7064Seed
 
 	for i := range len(national) {
 		d := int(national[i] - '0')
 
 		base := check
 		if base == 0 {
-			base = 10
+			base = iso7064Mod10
 		}
 
-		check = ((base*2)%11 + d) % 10
+		check = ((base*iso7064Weight)%iso7064Mod11 + d) % iso7064Mod10
 	}
 
 	return check == 1

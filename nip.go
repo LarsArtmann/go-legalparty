@@ -12,6 +12,8 @@ import (
 // space deliberately excludes it). Carried unprefixed or as PL+digits.
 type NIP string
 
+const nipLength = 10
+
 // ParseNIP validates and normalizes a Polish NIP: separators stripped
 // (the fleet's identifier-normalization convention), an optional PL
 // prefix accepted, checksum verified.
@@ -19,7 +21,7 @@ func ParseNIP(s string) (NIP, error) {
 	v := normalizeTaxIdentifier(strings.ToUpper(s))
 	v = strings.TrimPrefix(v, "PL")
 
-	if len(v) != 10 {
+	if len(v) != nipLength {
 		return "", errorfamily.NewRejection("legalparty.nip.invalid",
 			"a Polish NIP is 10 digits (optionally PL-prefixed), got "+s)
 	}
