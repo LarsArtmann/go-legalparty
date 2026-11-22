@@ -4,6 +4,13 @@ All notable changes. Dates are 2026 unless stated.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
+## [Unreleased]
+
+### Added
+
+- `TestParseTaxNumber` (18 vectors): all three `tax_number.*` rejection codes, the DE 10-13 digit bounds, generic-jurisdiction 5-16 bounds, separator stripping, and the VAT-shape refusal — including the lowercase-prefix and country-independent cases. `TestNewRegisterRef`: both `register.*` rejection codes, constructor trimming, and the zero-value `Validate` ordering. Every shipped parse path now carries vectors; FEATURES shows zero `PARTIALLY_FUNCTIONAL` rows.
+- Released v0.1.1 (2026-11-22): corrected SECURITY.md advisory URL, truthful README table, legal-form and Dutch-VAT rule fixes.
+
 ## [v0.1.1] - 2026-11-22
 
 ### Added

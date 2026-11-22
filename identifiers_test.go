@@ -230,3 +230,56 @@ func TestLegalFormRules(t *testing.T) {
 		})
 	}
 }
+
+// RegisterRef is the one non-checksummed constructor: the vectors pin
+// presence of both halves plus the trimming, and that the same rules hold
+// when Validate runs on a zero value built without the constructor.
+func TestNewRegisterRef(t *testing.T) {
+	t.Parallel()
+
+	t.Run("happy path trims both halves", func(t *testing.T) {
+		t.Parallel()
+
+		got, err := NewRegisterRef(" de_munich ", " HRB 12345 ")
+		if err != nil {
+			t.Fatalf("NewRegisterRef must accept: %v", err)
+		}
+
+		if got.Registry != "de_munich" || got.Number != "HRB 12345" {
+			t.Fatalf("NewRegisterRef trims: got %+v", got)
+		}
+	})
+
+	t.Run("registry required", func(t *testing.T) {
+		t.Parallel()
+
+		if _, err := NewRegisterRef("   ", "HRB 12345"); err == nil {
+			t.Fatal("blank registry must reject")
+		} else if code := errorCode(t, err); code != "legalparty.register.registry_required" {
+			t.Fatalf("error code: got %q, want legalparty.register.registry_required", code)
+		}
+	})
+
+	t.Run("number required", func(t *testing.T) {
+		t.Parallel()
+
+		if _, err := NewRegisterRef("de_munich", ""); err == nil {
+			t.Fatal("blank number must reject")
+		} else if code := errorCode(t, err); code != "legalparty.register.number_required" {
+			t.Fatalf("error code: got %q, want legalparty.register.number_required", code)
+		}
+	})
+
+	t.Run("zero value fails validate with registry first", func(t *testing.T) {
+		t.Parallel()
+
+		err := RegisterRef{}.Validate()
+		if err == nil {
+			t.Fatal("zero RegisterRef must fail Validate")
+		}
+
+		if code := errorCode(t, err); code != "legalparty.register.registry_required" {
+			t.Fatalf("error code: got %q, want legalparty.register.registry_required", code)
+		}
+	})
+}
