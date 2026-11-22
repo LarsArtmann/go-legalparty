@@ -22,7 +22,12 @@ floor (go-error-family) is a deliberate design decision.
 
 No `flake.nix`, no Makefile, no justfile — plain Go module on purpose.
 
+- CI (`.github/workflows/ci.yml`, every push and PR): race tests, vet,
+  govulncheck, golangci-lint, a consumer-import simulation, dprint check,
+  fleet workflow-policy vet. Local equivalents: the commands below.
 - Tests: `go test ./...` (add `-race` per CONTRIBUTING.md)
+- Fuzz: `fuzz_test.go` carries seed-corpus targets (NIP, Regon, VATID, LEI,
+  TaxNumber); CI runs seeds only — local `-fuzz` runs are on-demand.
 - Vet: `go vet ./...`
 - Quality gate: `buildflow` — this repo is covered (the `.gitignore` block is
   buildflow-managed) but has no `.buildflow.yml`, so defaults apply. Use
@@ -122,6 +127,15 @@ is the glossary (this library is vocabulary — its types ARE the fleet's
 canonical identifier terms). Verify doc claims against code before trusting
 them; fix drift on sight.
 
+Snapshot convention: `docs/status/` holds point-in-time session reports —
+immutable once written; superseding work gets a NEW report, and open items
+in old reports are resolved by inline annotation (done-at verdicts), never
+by rewriting history. The review-artifact dirs (`docs/architecture-understanding/`,
+`docs/reviews/`, `docs/modularization/`) are the same class of artifact:
+append-only, indexed by `docs/architecture-understanding/README.md`, and
+tracked by docs-gates for annotation (never freshness-regressed by new
+commits).
+
 ## Testing pattern
 
 Table-driven, `t.Parallel()` on every test and subtest. `wantCode == ""`
@@ -134,7 +148,11 @@ Add vectors for any new jurisdiction rule.
 ## Repo conventions
 
 - Go 1.27; modern idioms are expected (`for i := range 9` int-range loops).
-- Branch mainline is `master` (git-town config, GitHub API connector).
-- Dependabot: weekly gomod updates, minor+patch grouped.
+- Branch mainline is `master` (git-town config, GitHub API connector); PRs
+  gate on CI — cut the PR branch BEFORE committing anything meant for the
+  PR (a PR merged from an older branch tip silently strands later commits;
+  that is how the five-skill review artifacts missed PR #1 and needed a
+  cherry-pick).
+- Dependabot: weekly gomod + github-actions updates, minor+patch grouped.
 - Releases: CHANGELOG entry + annotated tag.
 - `reports/` is a gitignored local artifact dir (coverage output).

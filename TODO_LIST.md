@@ -11,24 +11,24 @@ basis: code sweep + consumer-repo verification (`cqrs-htmx/legalparty-model`,
 `docs/status/2026-11-22_16-24_agents-md-doc-corpus-gate-green.md` §f (rows
 marked R§f/N derive from it).
 
-**Last updated:** 2026-11-22 · docs-health AUDIT pass — shipped and moved to
-CHANGELOG `[Unreleased]`: AGENTS.md hardening (R§f/1-2, 15-16), migration
-narrative single-homing (R§f/3), README TaxNumber/RegisterRef examples
-(R§f/17) + two table-drift fixes, CHANGELOG link alignment (R§f/25),
-SECURITY.md fixes + AUTHORS verification (R§f/14).
+**Last updated:** 2026-11-22 · execution-session pass — REGON row narrowed
+(the type shipped in v0.2.0; only the company-master-data adoption half
+remains), fuzz-target row removed (fuzz_test.go shipped inside merged PR #1,
+recorded in CHANGELOG v0.2.0), census item routed to ROADMAP "Explicitly out
+of scope", ROADMAP gained PL-VATID / GLEIF-cadence / rule-seam /
+modularize-revisit rows (plan v2 M7).
 
 ## High Impact
 
 | Task                                                                                                                                                               | Status    | Impact | Effort | Evidence                                                                                                                                                                                                         |
 | ------------------------------------------------------------------------------------------------------------------------------------------------------------------ | --------- | ------ | ------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Add REGON (Polish business registry number): 9-digit (weights 8-9-2-3-4-5-6-7) and 14-digit forms, mod 11; then delete company-master-data's local copy (R§f/8-10) | 🔴 `TODO` | High   | M      | `company-master-data/internal/domain/checksum.go:9` keeps REGON local "NOT yet covered by go-legalparty". REGON's remainder 10 encodes check digit 0 — the opposite edge from NIP, where remainder 10 is invalid |
+| Delete company-master-data's local REGON copy (the type itself shipped in v0.2.0; adoption remains) (R§f/8-10)                                                    | 🔴 `TODO` | High   | S      | `company-master-data/internal/domain/checksum.go:9` keeps REGON local "NOT yet covered by go-legalparty". Bump it to v0.2.0, delegate to `legalparty.ParseRegon`, delete the local checksum + dead helpers |
 
 ## Medium Impact
 
 | Task                                                                                                         | Status    | Impact | Effort | Evidence                                                                                                                |
 | ------------------------------------------------------------------------------------------------------------ | --------- | ------ | ------ | ----------------------------------------------------------------------------------------------------------------------- |
 | Fix stale `// indirect` marker on go-legalparty in invoices' go.mod (`go mod tidy`) (R§f/11, repo: invoices) | 🔴 `TODO` | Med    | S      | `invoices/internal/models/tax_id_validation.go:8` imports it directly while go.mod marks it indirect                    |
-| Add fuzz targets for the checksum parsers (ParseNIP/ParseVATID/ParseLEI/ParseTaxNumber) (R§f/18)             | 🔴 `TODO` | Med    | M      | Fleet pattern: go-error-family carries 16 fuzz targets; this repo has zero                                              |
 | Canonical-facts drift gate: pin README table rows to code symbols (fleet `check-canonical-facts.sh` pattern) | 🔴 `TODO` | Med    | M      | README drifted 3 rows (FI length, branch/trust classes, PL rule) through a full session + a false "verified" scope line |
 
 ## Low Impact

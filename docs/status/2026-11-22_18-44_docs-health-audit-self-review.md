@@ -64,7 +64,7 @@ Unchanged from report 1, all still rowed: REGON, test vectors, CI wiring, fuzz t
 | 12 | Canonical-facts drift gate (pin README table rows to code symbols; fleet script pattern)         | M      | NEW — rowing now     |
 | 13 | Route the census item: ROADMAP open question or explicit drop                                    | S      | NEW — rowing now     |
 | 14 | pkg.go.dev render check after next release                                                       | S      | rides #5             |
-| 15 | Triage first Dependabot wave when it arrives                                                     | S      | recurring, unrowed   |
+| 15 | Triage first Dependabot wave when it arrives — DONE 2026-11-22: first wave triaged (zero open PRs, zero open alerts) | S      | recurring, unrowed   |
 
 ## g) Questions I cannot answer myself
 
