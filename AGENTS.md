@@ -1,11 +1,12 @@
 # AGENTS.md — go-legalparty
 
 Pure Go value library: legal-party identifier types with real checksums
-(NIP, VATID, LEI, TaxNumber, RegisterRef, CountryCode, LegalFormClass) for
-the DE/PL/EU billing domain. Extracted from `cqrs-htmx/legalparty-model`
-per ADR-0001 (history in CHANGELOG). Single flat package
-`github.com/larsartmann/go-legalparty`, root-level files per concept
-(`identifiers.go`, `taxnumber.go`, `nip.go`, `country.go`, `legalform.go`).
+(NIP, Regon, VATID, LEI, TaxNumber, RegisterRef, CountryCode,
+LegalFormClass) for the DE/PL/EU billing domain. Extracted from
+`cqrs-htmx/legalparty-model` per ADR-0001 (history in CHANGELOG). Single
+flat package `github.com/larsartmann/go-legalparty`, root-level files per
+concept (`identifiers.go`, `taxnumber.go`, `nip.go`, `regon.go`,
+`country.go`, `legalform.go`).
 
 ## Scope boundary (the most important rule)
 
@@ -68,6 +69,11 @@ These encode regulation edges; do not "fix" them without a regulatory source:
   (checksum space excludes it — the mod-11 result must equal the check digit
   as-is). Hand-rolled copies that map remainder 10 to check digit 0 accept
   invalid NIPs — that bug class is why this library exists.
+- **Regon**: weights 8,9,2,3,4,5,6,7 mod 11; **remainder 10 encodes check
+  digit 0** — the opposite edge from NIP. The 14-digit local-unit form
+  checks only the 9-digit parent prefix; the documented 13-weight serial
+  check is deliberately NOT enforced (KRS-published branch REGONs falsify
+  it — real master data fails that scheme).
 - **DE VAT**: ISO 7064 Mod 11,10 over all 9 digits, **seed 5**, valid iff
   final check == 1. Faithful port of python-stdnum `mod_11_10`; verified
   vectors live in the `validDEVATChecksum` doc comment (BMF example
@@ -91,8 +97,8 @@ These encode regulation edges; do not "fix" them without a regulatory source:
   the caller — `ParseVATID` will not guess a country.
 - Normalization convention (fleet-wide): uppercase, trim, strip separators
   (space, `-`, `.`, `/`) via `normalizeTaxIdentifier`. Stored forms are
-  canonical: `VATID` keeps its prefix, `NIP` stores bare 10 digits (PL prefix
-  accepted on input, stripped on store).
+  canonical: `VATID` keeps its prefix, `NIP` and `Regon` store bare digits
+  (PL prefix accepted on input, stripped on store).
 
 ## Consumers (blast radius of semantic changes)
 
