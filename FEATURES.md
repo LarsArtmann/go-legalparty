@@ -22,10 +22,10 @@ Every label answers ONE question: does working code exist — and if not, why no
 | ----------------------------------------------------------------- | --------------------- | ------------------------------------------------------------ | -------------------------------------------------------------------------------------------------- |
 | NIP parsing + weighted checksum                                   | 🟢 `FULLY_FUNCTIONAL` | `nip.go`; `TestParseNIP` pins MoF 5260000152                 | Remainder-10-invalid edge pinned — the bug this extraction fixed                                   |
 | REGON parsing (9-digit entity, 14-digit local unit)               | 🟢 `FULLY_FUNCTIONAL` | `regon.go`; `TestParseRegon` pins algorytm.org + KRS records | Remainder-10-encodes-0 edge pinned (opposite of NIP); serial deliberately unchecked (KRS evidence) |
-| VATID parsing (DE checksum, NL/AT/PL shapes, generic EU fallback) | 🟢 `FULLY_FUNCTIONAL` | `identifiers.go:167`; `TestParseVATID` pins BMF example      | Only DE carries a real checksum; other jurisdictions are format-checked (by design, see ROADMAP)   |
-| LEI parsing (ISO 17442 mod-97)                                    | 🟢 `FULLY_FUNCTIONAL` | `identifiers.go:17`; `TestParseLEI` pins live GLEIF records  | Case-normalized; 20 chars [A-Z0-9]                                                                 |
+| VATID parsing (DE checksum, NL/AT/PL shapes, generic EU fallback) | 🟢 `FULLY_FUNCTIONAL` | `identifiers.go:200`; `TestParseVATID` pins BMF example      | Only DE carries a real checksum; other jurisdictions are format-checked (by design, see ROADMAP)   |
+| LEI parsing (ISO 17442 mod-97)                                    | 🟢 `FULLY_FUNCTIONAL` | `identifiers.go:38`; `TestParseLEI` pins live GLEIF records  | Case-normalized; 20 chars [A-Z0-9]                                                                 |
 | TaxNumber parsing (DE 10-13 digits, generic 5-16)                 | 🟢 `FULLY_FUNCTIONAL` | `taxnumber.go:16`; `TestParseTaxNumber` (18 vectors)         | All three rejection codes + DE 10/13 bounds + separator stripping pinned                           |
-| RegisterRef construction + validation                             | 🟢 `FULLY_FUNCTIONAL` | `identifiers.go:72`; `TestNewRegisterRef`                    | Both rejection codes pinned; zero value fails Validate on the registry first                       |
+| RegisterRef construction + validation                             | 🟢 `FULLY_FUNCTIONAL` | `identifiers.go:94`; `TestNewRegisterRef`                    | Both rejection codes pinned; zero value fails Validate on the registry first                       |
 
 ## Classifiers
 
@@ -33,7 +33,7 @@ Every label answers ONE question: does working code exist — and if not, why no
 | ---------------------------------------------- | --------------------- | ---------------------------------------------------------- | ---------------------------------------------------------------------------------------------- |
 | CountryCode (assigned ISO 3166-1 alpha-2 only) | 🟢 `FULLY_FUNCTIONAL` | `country.go`; `TestParseCountryCodeAndLegalForm`           | XK/EU/ZZ deliberately rejected                                                                 |
 | LegalFormClass parsing (5 values)              | 🟢 `FULLY_FUNCTIONAL` | `legalform.go`; same test                                  | Unknown classes rejected with the valid set in the message                                     |
-| Registry-anchor & LEI-eligibility rules        | 🟢 `FULLY_FUNCTIONAL` | `legalform.go:58`, `legalform.go:73`; `TestLegalFormRules` | Both rules pinned for all five classes and for invalid input (an unknown class allows nothing) |
+| Registry-anchor & LEI-eligibility rules        | 🟢 `FULLY_FUNCTIONAL` | `legalform.go:58`, `legalform.go:74`; `TestLegalFormRules` | Both rules pinned for all five classes and for invalid input (an unknown class allows nothing) |
 
 **Created:** 2026-11-22 · docs-health BUILD pass, then AUDIT-verified (agent,
 glm-5.3) · basis: code sweep + `go test ./...` green; counts computed from

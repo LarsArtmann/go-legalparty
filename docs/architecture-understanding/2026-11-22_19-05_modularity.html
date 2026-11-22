@@ -973,7 +973,7 @@
               <div class="check">+</div>
               <div class="text">
                 <strong>Normalization single-homed</strong>
-                <span>The fleet-wide convention (uppercase, trim, strip four separators) lives in one function, <code>normalizeTaxIdentifier</code> (identifiers.go:97), and every parser routes through it. Fix once, fixed everywhere.</span>
+                <span>The fleet-wide convention (uppercase, trim, strip four separators) lives in one function, <code>normalizeTaxIdentifier</code> (identifiers.go:124), and every parser routes through it. Fix once, fixed everywhere.</span>
               </div>
             </div>
           </div>
@@ -987,7 +987,7 @@
           <div class="issue issue-important" id="issue-1">
             <span class="severity severity-important">Important &middot; Medium impact</span>
             <h3>Two public surfaces carry zero test vectors</h3>
-            <div class="where">taxnumber.go:16 (ParseTaxNumber) &middot; identifiers.go:72 (NewRegisterRef) &middot; identifiers.go:82 (RegisterRef.Validate)</div>
+            <div class="where">taxnumber.go:16 (ParseTaxNumber) &middot; identifiers.go:94 (NewRegisterRef) &middot; identifiers.go:108 (RegisterRef.Validate)</div>
             <p>
               The error contract is frozen public API, but codes
               <code>tax_number.required / vat_shape / national_invalid</code>
@@ -1023,7 +1023,7 @@
           <div class="issue issue-nice" id="issue-3">
             <span class="severity severity-nice">Nice to have &middot; Fixed this session</span>
             <h3>Rule methods disagreed on invalid classes; NL VAT was looser than its own message</h3>
-            <div class="where">legalform.go:74 (AllowsLEI) &middot; identifiers.go:251 (validateNLVAT)</div>
+            <div class="where">legalform.go:74 (AllowsLEI) &middot; identifiers.go:287 (validateNLVAT)</div>
             <p>
               Found during this review, fixed and pinned the same session:
               <code>AllowsLEI</code> answered <em>true</em> for values that
