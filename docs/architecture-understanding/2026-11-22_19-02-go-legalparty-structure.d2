@@ -1,0 +1,27 @@
+direction: down
+
+fleet: Consumers (fleet) {
+  model: "cqrs-htmx/legalparty-model (aliases.go bridge)"
+  invoices: "invoices (tax_id_validation.go)"
+  cmd: "company-master-data (REGON stays local)"
+}
+
+lib: "github.com/larsartmann/go-legalparty (single module, single package)" {
+  identifiers: "identifiers.go - VATID, TaxNumber, LEI, RegisterRef"
+  nip: "nip.go - NIP"
+  country: "country.go - CountryCode + ISO 3166-1 table"
+  legalform: "legalform.go - LegalFormClass + rule methods"
+  kernel: "checksum + normalization kernels (mod-97, ISO 7064, weighted mod 11, normalizeTaxIdentifier)"
+}
+
+ef: "go-error-family (rejection codes legalparty.<subject>.<cause>)"
+
+fleet.model -> lib: aliases bridge
+fleet.invoices -> lib: delegates checksums
+fleet.cmd -> lib: parses DE/PL identifiers
+
+identifiers -> country: prefix parse
+identifiers -> kernel
+nip -> kernel
+country -> kernel: normalize on parse
+lib -> ef: NewRejection
