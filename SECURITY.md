@@ -4,7 +4,7 @@
 
 | Version | Supported  |
 | ------- | ---------- |
-| v0.1.2  | ✅ Current |
+| v0.1.0  | ✅ Current |
 
 Only the latest release receives security fixes. Please update to the latest
 version before reporting issues found in older releases.
@@ -13,7 +13,7 @@ version before reporting issues found in older releases.
 
 Please do **not** open public issues for security problems. Report privately instead:
 
-- **GitHub Security Advisory**: https://github.com/LarsArtmann/go-must/security/advisories/new
+- **GitHub Security Advisory**: https://github.com/LarsArtmann/go-legalparty/security/advisories/new
 
 ### What to include
 
@@ -33,9 +33,9 @@ Please do **not** open public issues for security problems. Report privately ins
 ## Security Practices
 
 - All changes are code-reviewed before merge
-- Automated security scanning runs in CI
-- Dependencies are kept up to date
+- Dependencies are kept up to date (Dependabot, weekly)
+- Automated scanning in CI is planned (no workflows yet — see TODO_LIST)
 
 ---
 
-_Maintained with [securitymd](https://github.com/LarsArtmann/securitymd). Last updated: 2026-10-11._
+_Maintained with [securitymd](https://github.com/LarsArtmann/securitymd). Last updated: 2026-11-22 (docs-health audit: fixed wrong repo in advisory URL, wrong current version, false CI claim)._

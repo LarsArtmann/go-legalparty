@@ -2,6 +2,26 @@
 
 All notable changes. Dates are 2026 unless stated.
 
+The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
+
+## [Unreleased]
+
+### Added
+
+- Repo doc corpus for agent and docs-gates operation: `AGENTS.md` (session context: scope boundary, frozen rejection-code contract, regulation edges, consumer blast radius), `TODO_LIST.md` (REGON support; test vectors for the untested parse paths), `FEATURES.md` (honest inventory — TaxNumber, RegisterRef, and the LegalFormClass rule methods are `PARTIALLY_FUNCTIONAL` pending vectors), `ROADMAP.md` (demand-gated: registry IO, more jurisdiction checksums), `docs/DOMAIN_LANGUAGE.md` (glossary + anti-language).
+- `.golangci.yml` seeded and expanded via buildflow's `golangci-lint-auto-configure` (the repo previously carried no lint config).
+- README installation section and example coverage for `TaxNumber` + `RegisterRef`.
+
+### Fixed
+
+- README validation table drifted from code: `LegalFormClass` listed "branch/trust" (actual classes: public_body, non_profit), `VATID` claimed an FI fixed length (only AT/PL exist), `TaxNumber` claimed a PL NIP-linked rule (only DE has jurisdiction rules). All rows now match `legalform.go`/`identifiers.go`.
+- SECURITY.md carried template drift from another repo: supported-version table claimed v0.1.2 (v0.1.0 is current), the vulnerability-report advisory URL pointed at `go-must` instead of `go-legalparty`, and the practices list claimed CI scanning with no CI present.
+
+### Changed
+
+- Migration narrative single-homed: README/STACK/AGENTS state current consumer truth, this CHANGELOG owns the history — cqrs-htmx/legalparty-model consumes this library with its duplicate value sources removed, invoices delegates its checksums here (remainder-10 NIP bug fixed), company-master-data adopts directly with only REGON still local.
+- AGENTS.md hardened per the docs-health agents-quality guide: temporal qualifiers stripped, dprint remote-plugin and stale-cache gotchas added, the go-structure-linter "use internal/" advisory recorded as a deliberate non-fix.
+
 ## [v0.1.0] - 2026-11-21
 
 ### Added

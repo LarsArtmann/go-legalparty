@@ -29,4 +29,4 @@ Decision record per the stack-selection skill.
 ## Wiring order
 
 1. `meta set` registration (2026-11-21)
-2. Migration rows: cqrs-htmx/legalparty-model consumes this; invoices replaces tax_id_validation.go (fixing its remainder-10 NIP bug); company-master-data adopts (ADR-0001 rule 5)
+2. Consumers: cqrs-htmx/legalparty-model, invoices, company-master-data — all wired to this library (REGON stays local in company-master-data pending coverage here); history in CHANGELOG
