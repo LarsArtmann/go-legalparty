@@ -35,6 +35,5 @@ by convention: shipped rows are removed, not ticked)_
 
 ### Host hygiene (not repo work — carried here so it has a home)
 
-| Task                                                                                                   | Status    | Impact | Effort | Evidence                                                                                                                           |
-| ------------------------------------------------------------------------------------------------------ | --------- | ------ | ------ | ---------------------------------------------------------------------------------------------------------------------------------- |
-| Rebuild the stale buildflow binary once BuildFlow's tree is clean (a concurrent session is editing it) | 🔴 `TODO` | Low    | M      | Doctor: binary `769b3a4` vs HEAD `38d6d91ce`; `nix build .` fails on the `-dirty` go-modules hash while their session is in flight |
+_(none — the buildflow binary was rebuilt and reinstalled from
+BuildFlow HEAD `f129f43` once that tree settled; doctor is green)_
