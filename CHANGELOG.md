@@ -6,6 +6,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## [Unreleased]
 
+## [v0.3.0] - 2026-11-23
+
 ### Added
 
 - Canonical-facts drift gate (`scripts/check-canonical-facts.sh`, 26 checks) plus a CI job: every documented validation rule must carry its code anchor and every drift that once burned a session is asserted absent — docs and code can no longer disagree silently.
