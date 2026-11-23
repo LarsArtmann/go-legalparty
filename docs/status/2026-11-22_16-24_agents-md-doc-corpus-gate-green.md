@@ -71,7 +71,7 @@
 | 17 | Add TaxNumber + RegisterRef to README example block                                                                                                        | S      | this repo                 |
 | 18 | Fuzz targets for the parsers (fleet pattern: go-error-family carries 16; checksum parsers are prime targets)                                               | M      | this repo                 |
 | 19 | Release decision: v0.1.1 (docs/config) vs hold for REGON+vectors as v0.2.0                                                                                 | S      | decision                  |
-| 20 | pkg.go.dev render check after next release                                                                                                                 | S      | post-release              |
+| 20 | pkg.go.dev render check after next release — DONE 2026-11-23: v0.2.0 module page renders (published Nov 22); godoc display is suppressed by pkg.go.dev license policy (proprietary LICENSE, detected UNKNOWN) — accepted suppression, not a bug | S      | post-release              |
 | 21 | Triage first Dependabot wave when it arrives (weekly gomod) — DONE 2026-11-22: first wave triaged (zero open PRs, zero open alerts) as part of v0.2.0 prep | S      | recurring                 |
 | 22 | dprint local-plugin wiring decision (accept network fetch vs local wasm)                                                                                   | S      | decision                  |
 | 23 | Re-run fleet domain-language census (this repo now HAS a DOMAIN_LANGUAGE.md to count)                                                                      | M      | fleet-level               |
