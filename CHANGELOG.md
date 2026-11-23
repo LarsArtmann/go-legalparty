@@ -8,11 +8,13 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ### Added
 
+- Canonical-facts drift gate (`scripts/check-canonical-facts.sh`, 26 checks) plus a CI job: every documented validation rule must carry its code anchor and every drift that once burned a session is asserted absent — docs and code can no longer disagree silently.
 - Uniform `IsValid` surface: `LEI.IsValid`, `VATID.IsValid`, `NIP.IsValid`, `Regon.IsValid`, and `TaxNumber.IsValidFor(cc)` — the one-call validity idiom from the type-model review's top finding, parse-and-discard semantics, zero value never valid, TaxNumber validity deliberately country-dependent. Vectors cover valid, invalid, and zero values per type plus the wrong-country case.
 
 ### Changed
 
 - `VATID` extracted from `identifiers.go` into `vatid.go` (file-size gate; keeps the root-level file-per-concept convention, mirroring the `taxnumber.go`/`nip.go` precedent). Shared helpers (`normalizeTaxIdentifier`, rune-class checks) stay in `identifiers.go`.
+- Consumer adoption sweep complete: `company-master-data` deleted its hand-rolled REGON checksum and delegates to `ParseRegon` (v0.2.0) — the last identifier family in the fleet no longer has a duplicate validator; `cqrs-htmx/legalparty-model` replaced its duplicated identifier vectors with a compact alias-wiring pin (canonical vectors are owned here).
 
 ## [v0.2.0] - 2026-11-22
 

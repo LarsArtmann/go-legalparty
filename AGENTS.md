@@ -54,9 +54,28 @@ summary's findings section, not just the exit code.
   that reports "0 files scanned" right after you add files is lying.
   Re-run with `BUILDFLOW_NO_RESULT_CACHE=1`.
 - `dprint.json` fetches its four plugins over the network on first use —
-  a cold run can hang waiting on that fetch. Options: point the config at
-  local `.wasm` paths, delete it and let buildflow regenerate, or accept
-  the fetch (cached in `~/.cache/dprint`).
+  a cold run can hang waiting on that fetch. Decision (2026-11-23):
+  accept the fetch, cached in `~/.cache/dprint` — all fleet siblings use
+  the same remote URLs, and local `.wasm` paths would break CI
+  portability. Delete `dprint.json` and let buildflow regenerate only if
+  the config itself drifts.
+- Lint policy: the two global data tables (`assignedCountryCodes`,
+  `countryCodeSet`) carry `//nolint:gochecknoglobals` with inline
+  justifications instead of disabling the linter, and `wsl_v5` stays
+  enabled — `golangci-lint: 0 issues` is the steady state, so investigate
+  any new finding rather than adding suppressions. Warning-severity
+  detect-only findings are triaged, not chased: fuzz-target seed
+  similarity (art-dupl), fixed-length-loop bounds analysis
+  (branching-flow), the RegisterRef opaque-string swap hazard, and
+  go-auto-upgrade's `lo.SliceToMap` suggestion (rejected: adding
+  samber/lo for one conversion would break the one-dependency floor).
+- A full CI-fidelity battery is `BUILDFLOW_NO_RESULT_CACHE=1 buildflow
+  --build-mode full` (~5-10 min: race + coverage + every analyzer).
+  `--build-mode dev` is the fast local loop; the findings gate fails on
+  error-severity findings, and a green run can still list
+  warning-severity detect-only findings (art-dupl, branching-flow,
+  govulncheck stdlib, go-structure-linter's deliberate "use internal/"
+  advisory) — read the summary, not just the exit code.
 - `docs-gates run .` (the doc battery: freshness, annotate, routing,
   cadence) also runs inside buildflow; it FATALs if TODO_LIST.md is missing.
 - go-structure-linter suggests "use internal/ for non-public code" —
