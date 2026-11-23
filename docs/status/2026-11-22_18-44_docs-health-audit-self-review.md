@@ -48,23 +48,23 @@ Unchanged from report 1, all still rowed: REGON, test vectors, CI wiring, fuzz t
 
 ## f) Next things
 
-| #  | Task                                                                                                                 | Effort | Status in TODO_LIST  |
-| -- | -------------------------------------------------------------------------------------------------------------------- | ------ | -------------------- |
-| 1  | REGON 9+14 digit + GUS vectors; then delete company-master-data's local copy                                         | M      | rowed                |
-| 2  | Vectors: ParseTaxNumber / RegisterRef / RequiresRegistryAnchor / AllowsLEI; flip 3 FEATURES rows                     | S      | rowed                |
-| 3  | CI decision + wiring (zero workflows; buildflow gate candidate)                                                      | M      | rowed                |
-| 4  | Fix invoices' stale `// indirect` (repo: invoices)                                                                   | S      | rowed                |
-| 5  | Release decision: v0.1.1 (SECURITY fix argues for prompt shipping) vs v0.2.0 with REGON+vectors                      | S      | rowed (question g/1) |
-| 6  | Fuzz targets for the four parsers                                                                                    | M      | rowed                |
-| 7  | `buildflow --build-mode full` once                                                                                   | M      | rowed                |
-| 8  | dprint local-plugin decision                                                                                         | S      | rowed                |
-| 9  | legalparty-model identifiers_test.go: aliases or dead? (repo: cqrs-htmx)                                             | S      | rowed                |
-| 10 | Annotate report 1's resolved §b/§d items inline (same-session verdicts available)                                    | S      | NEW — rowing now     |
-| 11 | Add `docs/status/` convention line to AGENTS.md documentation model                                                  | S      | NEW — rowing now     |
-| 12 | Canonical-facts drift gate (pin README table rows to code symbols; fleet script pattern)                             | M      | NEW — rowing now     |
-| 13 | Route the census item: ROADMAP open question or explicit drop                                                        | S      | NEW — rowing now     |
+| #  | Task                                                                                                                                                                                                                                            | Effort | Status in TODO_LIST  |
+| -- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------ | -------------------- |
+| 1  | REGON 9+14 digit + GUS vectors; then delete company-master-data's local copy                                                                                                                                                                    | M      | rowed                |
+| 2  | Vectors: ParseTaxNumber / RegisterRef / RequiresRegistryAnchor / AllowsLEI; flip 3 FEATURES rows                                                                                                                                                | S      | rowed                |
+| 3  | CI decision + wiring (zero workflows; buildflow gate candidate)                                                                                                                                                                                 | M      | rowed                |
+| 4  | Fix invoices' stale `// indirect` (repo: invoices)                                                                                                                                                                                              | S      | rowed                |
+| 5  | Release decision: v0.1.1 (SECURITY fix argues for prompt shipping) vs v0.2.0 with REGON+vectors                                                                                                                                                 | S      | rowed (question g/1) |
+| 6  | Fuzz targets for the four parsers                                                                                                                                                                                                               | M      | rowed                |
+| 7  | `buildflow --build-mode full` once                                                                                                                                                                                                              | M      | rowed                |
+| 8  | dprint local-plugin decision                                                                                                                                                                                                                    | S      | rowed                |
+| 9  | legalparty-model identifiers_test.go: aliases or dead? (repo: cqrs-htmx)                                                                                                                                                                        | S      | rowed                |
+| 10 | Annotate report 1's resolved §b/§d items inline (same-session verdicts available)                                                                                                                                                               | S      | NEW — rowing now     |
+| 11 | Add `docs/status/` convention line to AGENTS.md documentation model                                                                                                                                                                             | S      | NEW — rowing now     |
+| 12 | Canonical-facts drift gate (pin README table rows to code symbols; fleet script pattern)                                                                                                                                                        | M      | NEW — rowing now     |
+| 13 | Route the census item: ROADMAP open question or explicit drop                                                                                                                                                                                   | S      | NEW — rowing now     |
 | 14 | pkg.go.dev render check after next release — DONE 2026-11-23: v0.2.0 module page renders (published Nov 22); godoc display is suppressed by pkg.go.dev license policy (proprietary LICENSE, detected UNKNOWN) — accepted suppression, not a bug | S      | rides #5             |
-| 15 | Triage first Dependabot wave when it arrives — DONE 2026-11-22: first wave triaged (zero open PRs, zero open alerts) | S      | recurring, unrowed   |
+| 15 | Triage first Dependabot wave when it arrives — DONE 2026-11-22: first wave triaged (zero open PRs, zero open alerts)                                                                                                                            | S      | recurring, unrowed   |
 
 ## g) Questions I cannot answer myself
 
