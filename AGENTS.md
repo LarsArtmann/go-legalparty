@@ -78,6 +78,10 @@ summary's findings section, not just the exit code.
   advisory) — read the summary, not just the exit code.
 - `docs-gates run .` (the doc battery: freshness, annotate, routing,
   cadence) also runs inside buildflow; it FATALs if TODO_LIST.md is missing.
+- The auto-commit daemon bypasses the formatting lane: it sweeps whatever
+  is in the working tree, unformatted tables included (two master
+  docs-format reds in one day from exactly this). After a daemon sweep
+  lands, run `dprint check` before anything gets pushed.
 - go-structure-linter suggests "use internal/ for non-public code" —
   deliberate non-fix: a pure value library is all-public by design.
 
