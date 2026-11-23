@@ -139,50 +139,38 @@ func normalizeTaxIdentifier(s string) string {
 	return b.String()
 }
 
-// isAllDigits reports whether every rune in s is an ASCII digit. The empty
-// string is not all digits.
-func isAllDigits(s string) bool {
+// allRunesMatch reports whether every rune in s satisfies match. The empty
+// string never matches.
+func allRunesMatch(s string, match func(rune) bool) bool {
 	if s == "" {
 		return false
 	}
 
 	for _, r := range s {
-		if r < '0' || r > '9' {
+		if !match(r) {
 			return false
 		}
 	}
 
 	return true
+}
+
+// isAllDigits reports whether every rune in s is an ASCII digit. The empty
+// string is not all digits.
+func isAllDigits(s string) bool {
+	return allRunesMatch(s, func(r rune) bool { return r >= '0' && r <= '9' })
 }
 
 // isAllUpperAlpha reports whether every rune in s is an uppercase ASCII
 // letter. The empty string is not all letters.
 func isAllUpperAlpha(s string) bool {
-	if s == "" {
-		return false
-	}
-
-	for _, r := range s {
-		if r < 'A' || r > 'Z' {
-			return false
-		}
-	}
-
-	return true
+	return allRunesMatch(s, func(r rune) bool { return r >= 'A' && r <= 'Z' })
 }
 
 // isAllUpperAlphaNumeric reports whether every rune in s is an uppercase
 // ASCII letter or a digit. The empty string is not a match.
 func isAllUpperAlphaNumeric(s string) bool {
-	if s == "" {
-		return false
-	}
-
-	for _, r := range s {
-		if (r < '0' || r > '9') && (r < 'A' || r > 'Z') {
-			return false
-		}
-	}
-
-	return true
+	return allRunesMatch(s, func(r rune) bool {
+		return (r >= '0' && r <= '9') || (r >= 'A' && r <= 'Z')
+	})
 }
