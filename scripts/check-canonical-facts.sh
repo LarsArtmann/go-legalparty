@@ -67,19 +67,19 @@ check "REGON serial-unchecked rationale (FEATURES)" \
 check "DE VAT ISO 7064 claim (README)" \
 	README.md 'ISO 7064 Mod 11,10'
 check "DE VAT checksum function" \
-	identifiers.go 'func validDEVATChecksum'
+	vatid.go 'func validDEVATChecksum'
 
 check "AT/PL fixed-length claim (README)" \
 	README.md 'AT/PL fixed lengths'
 check "AT fixed length 8 (want = 8)" \
-	identifiers.go 'want = 8'
+	vatid.go 'want = 8'
 check "PL fixed length 10" \
-	identifiers.go 'want = 10'
+	vatid.go 'want = 10'
 
 check "NL BTW shape claim (README)" \
 	README.md 'NL BTW shape'
 check "NL strict-shape rejection message" \
-	identifiers.go '9 digits, B, and 2 digits'
+	vatid.go '9 digits, B, and 2 digits'
 
 check "five legal-form classes row (README)" \
 	README.md 'natural_person / legal_entity / partnership / public_body / non_profit'

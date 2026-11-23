@@ -956,7 +956,7 @@
             <span class="badge badge-critical">Critical &middot; fixed</span>
             <span class="badge">single type</span>
             <h3>NL VAT was looser than its own error message</h3>
-            <div class="where">identifiers.go:287 (validateNLVAT) &middot; fixed + 2 new vectors</div>
+            <div class="where">vatid.go:128 (validateNLVAT) &middot; fixed + 2 new vectors</div>
             <p>
               The rejection message promises "9 digits, B, 2 digits", but the
               check only verified length 12 and a B at index 9 &mdash;
@@ -971,7 +971,7 @@
             <span class="badge badge-fixed">High &middot; fixed</span>
             <span class="badge">systemic: 5 sites</span>
             <h3>Character-class logic duplicated across five rune loops</h3>
-            <div class="where">identifiers.go:143-179 (isAllDigits / isAllUpperAlpha / isAllUpperAlphaNumeric)</div>
+            <div class="where">identifiers.go:144-188 (isAllDigits / isAllUpperAlpha / isAllUpperAlphaNumeric)</div>
             <p>
               "Is this all digits / uppercase letters / alphanumerics" was
               hand-rolled in ParseLEI, ParseNIP (twice), validateTaxNumberBody,
@@ -1027,7 +1027,7 @@
             <span class="badge badge-medium">Watch &middot; accepted</span>
             <span class="badge">single type</span>
             <h3>PL VATIDs are length-checked only</h3>
-            <div class="where">identifiers.go:298 (validateFixedLengthVAT)</div>
+            <div class="where">vatid.go:139 (validateFixedLengthVAT)</div>
             <p>
               <code>ParseVATID("PL1234567890")</code> verifies shape, not the
               NIP checksum &mdash; while <code>ParseNIP("1234567890")</code>
@@ -1103,7 +1103,7 @@
               <tr>
                 <td>VATID &rarr; CountryCode</td>
                 <td>Prefix parse rejects unassigned codes before the national part is examined</td>
-                <td>identifiers.go:208</td>
+                <td>vatid.go:32</td>
               </tr>
               <tr>
                 <td>VATID PL &harr; NIP</td>

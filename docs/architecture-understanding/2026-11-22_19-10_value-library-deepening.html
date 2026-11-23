@@ -899,7 +899,7 @@
           <span class="badge badge-high">Worth exploring</span>
           <span class="badge">in-process</span>
           <h2>1 &middot; Give every identifier one validity surface</h2>
-          <div class="where">identifiers.go (LEI, VATID) &middot; taxnumber.go (TaxNumber) &middot; nip.go (NIP)</div>
+          <div class="where">identifiers.go (LEI, RegisterRef) &middot; vatid.go (VATID) &middot; taxnumber.go (TaxNumber) &middot; nip.go (NIP)</div>
 
           <div class="grid-2">
             <div class="diagram" style="min-height:220px">
@@ -942,7 +942,7 @@
           <span class="badge badge-low">Speculative</span>
           <span class="badge">in-process</span>
           <h2>2 &middot; Extract a jurisdiction rule seam for VAT national parts</h2>
-          <div class="where">identifiers.go:260-324 (validateVATLength dispatch + DE/NL/fixed/generic rules)</div>
+          <div class="where">vatid.go:101-165 (validateVATLength dispatch + DE/NL/fixed/generic rules)</div>
 
           <div class="grid-2">
             <div class="diagram" style="min-height:220px">

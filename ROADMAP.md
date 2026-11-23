@@ -67,5 +67,5 @@ holds while all of these stay false. Revisit the split if any fires:
 
 - Should `RegisterRef.Registry` ever grow a controlled vocabulary, or does
   opacity remain the contract? (Current decision: opaque by design —
-  `identifiers.go:63`. Revisit only if two consumers disagree on registry
+  `identifiers.go:86`. Revisit only if two consumers disagree on registry
   codes.)
