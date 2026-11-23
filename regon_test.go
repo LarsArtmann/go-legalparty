@@ -60,3 +60,23 @@ func TestParseRegon(t *testing.T) {
 		})
 	}
 }
+
+func TestRegonIsValid(t *testing.T) {
+	t.Parallel()
+
+	if !Regon("732065814").IsValid() {
+		t.Fatal("algorytm.org official 9-digit REGON must be valid")
+	}
+
+	if !Regon("23511332857188").IsValid() {
+		t.Fatal("official 14-digit local-unit REGON must be valid")
+	}
+
+	if Regon("52735569400000").IsValid() {
+		t.Fatal("checksum-invalid parent must be invalid")
+	}
+
+	if Regon("").IsValid() || Regon("73206581").IsValid() {
+		t.Fatal("zero value and short input must be invalid")
+	}
+}

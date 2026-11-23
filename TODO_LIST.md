@@ -20,9 +20,9 @@ modularize-revisit rows (plan v2 M7).
 
 ## High Impact
 
-| Task                                                                                                                                                               | Status    | Impact | Effort | Evidence                                                                                                                                                                                                         |
-| ------------------------------------------------------------------------------------------------------------------------------------------------------------------ | --------- | ------ | ------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Delete company-master-data's local REGON copy (the type itself shipped in v0.2.0; adoption remains) (R§f/8-10)                                                    | 🔴 `TODO` | High   | S      | `company-master-data/internal/domain/checksum.go:9` keeps REGON local "NOT yet covered by go-legalparty". Bump it to v0.2.0, delegate to `legalparty.ParseRegon`, delete the local checksum + dead helpers |
+| Task                                                                                                           | Status    | Impact | Effort | Evidence                                                                                                                                                                                                   |
+| -------------------------------------------------------------------------------------------------------------- | --------- | ------ | ------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Delete company-master-data's local REGON copy (the type itself shipped in v0.2.0; adoption remains) (R§f/8-10) | 🔴 `TODO` | High   | S      | `company-master-data/internal/domain/checksum.go:9` keeps REGON local "NOT yet covered by go-legalparty". Bump it to v0.2.0, delegate to `legalparty.ParseRegon`, delete the local checksum + dead helpers |
 
 ## Medium Impact
 

@@ -26,11 +26,12 @@ legal-party identifiers. Provenance: extracted 2026-11-21 from
 
 ## Concepts
 
-| Term                        | Definition                                                                               | Context                                                                                                  |
-| --------------------------- | ---------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------- |
-| **Separator normalization** | Fleet-wide input convention: uppercase, trim, strip spaces/`-`/`.`/`/` before validation | `normalizeTaxIdentifier`; canonical forms are what the types store                                       |
-| **Rejection**               | A `go-error-family` Rejection with a stable machine code `legalparty.<subject>.<cause>`  | Codes are the public API (dashboards key on them); messages are human prose carrying the offending input |
-| **Canonical form**          | The normalized stored representation of an identifier                                    | VATID keeps its prefix; NIP and Regon drop the PL prefix; LEI is uppercased                              |
+| Term                        | Definition                                                                               | Context                                                                                                                                 |
+| --------------------------- | ---------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------- |
+| **Separator normalization** | Fleet-wide input convention: uppercase, trim, strip spaces/`-`/`.`/`/` before validation | `normalizeTaxIdentifier`; canonical forms are what the types store                                                                      |
+| **Rejection**               | A `go-error-family` Rejection with a stable machine code `legalparty.<subject>.<cause>`  | Codes are the public API (dashboards key on them); messages are human prose carrying the offending input                                |
+| **Canonical form**          | The normalized stored representation of an identifier                                    | VATID keeps its prefix; NIP and Regon drop the PL prefix; LEI is uppercased                                                             |
+| **IsValid surface**         | One-call validity idiom: `IsValid` on LEI/VATID/NIP/Regon, `IsValidFor(cc)` on TaxNumber | Parse-and-discard; the zero value is never valid; TaxNumber validity is country-dependent (no prefix means no jurisdiction-free answer) |
 
 ## Anti-language (terms deliberately NOT used)
 

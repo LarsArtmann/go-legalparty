@@ -151,16 +151,16 @@ deny-on-invalid) — closes §d1
 6. ★ Re-check all file:line citations in the four HTML reports against post-REGON HEAD;
 fix drifted refs
 7. ⚑ Verify pkg.go.dev propagation of v0.1.1 (release checklist; still unverified)
-   — VERIFIED 2026-11-22: v0.1.1 is live (published Nov 22, tagged, valid go.mod). Godoc
-   does NOT render — "Documentation not displayed due to license restrictions": the
-   proprietary LICENSE is not redistributable, so pkg.go.dev suppresses docs by policy.
-   Module face is truthful; godoc suppression is a licensing tradeoff, not a packaging bug.
+— VERIFIED 2026-11-22: v0.1.1 is live (published Nov 22, tagged, valid go.mod). Godoc
+does NOT render — "Documentation not displayed due to license restrictions": the
+proprietary LICENSE is not redistributable, so pkg.go.dev suppresses docs by policy.
+Module face is truthful; godoc suppression is a licensing tradeoff, not a packaging bug.
 8. ◆ Independent review pass over the concurrent REGON implementation (`32a46b8`) —
 new checksum code, second pair of eyes
 9. ◆ Review/finish the in-flight `fuzz_test.go` (untracked WIP from a concurrent session)
-   — RESOLVED: landed on master inside merged PR #1 (`f3cc1c1`); CI runs it seed-corpus mode
+— RESOLVED: landed on master inside merged PR #1 (`f3cc1c1`); CI runs it seed-corpus mode
 10. ◆ Review the uncommitted `.github/dependabot.yml` modification (intent unknown)
-    — RESOLVED: committed as `10f55df` (tracks github-actions alongside gomod, minor+patch grouped)
+— RESOLVED: committed as `10f55df` (tracks github-actions alongside gomod, minor+patch grouped)
 11. ◆ Verify the new CI workflow (`ff773f9`) has at least one green run gating a PR
 12. ⚑ Run `buildflow --build-mode full` once (only dev mode exercised)
 13. ⚑ Verify FEATURES' new "zero PARTIALLY_FUNCTIONAL rows" claim against code (CHANGELOG
@@ -193,13 +193,13 @@ warns every run)
 26. ◆ buildflow DB VACUUM (state DB 1.10 GB, cache 0.60 GB — preflight advisory)
 27. ◆ Rebuild buildflow binary (be700ae vs HEAD bdcad1e advisory)
 28. ★ Persist the splice script into html-report-kit assets (§e4)
-    — DONE 2026-11-22: the original /tmp script was lost to tmp cleanup; the technique is
-    recreated as `html-report-kit/assets/splice_report.py` (anchor-span splice, fails loudly
-    on non-unique anchors), smoke-tested
+— DONE 2026-11-22: the original /tmp script was lost to tmp cleanup; the technique is
+recreated as `html-report-kit/assets/splice_report.py` (anchor-span splice, fails loudly
+on non-unique anchors), smoke-tested
 29. ⚑ Decide cadence policy for `docs/architecture-understanding/`, `docs/reviews/`,
 `docs/modularization/` (docs-gates-tracked vs point-in-time snapshots)
-    — DECIDED 2026-11-22: point-in-time snapshots, append-only, annotation-tracked;
-    recorded in AGENTS.md "Documentation model" snapshot-convention paragraph
+— DECIDED 2026-11-22: point-in-time snapshots, append-only, annotation-tracked;
+recorded in AGENTS.md "Documentation model" snapshot-convention paragraph
 
 **Doc corpus**
 30. ⚑ Annotate status report `2026-11-22_16-24` §b/§d resolved items inline
@@ -208,8 +208,8 @@ warns every run)
 fuzz_test.go, CI workflow, v0.1.1 tag — written pre-concurrency)
 33. ⚑ Route the fleet-census item (16-24 report §f/23) to ROADMAP or drop explicitly
 34. ★ Cross-link the four reports + two diagrams (§e8)
-    — DONE 2026-11-22: `docs/architecture-understanding/README.md` series index links all
-    four reports and both diagram pairs with standing verdicts
+— DONE 2026-11-22: `docs/architecture-understanding/README.md` series index links all
+four reports and both diagram pairs with standing verdicts
 
 **ROADMAP fuel (demand-gated ideas, not commitments)**
 35. ★ Second checksum jurisdiction (FR/IT/ES): file-per-concept + the named rule seam
@@ -217,7 +217,7 @@ fuzz_test.go, CI workflow, v0.1.1 tag — written pre-concurrency)
 36. ★ EU-wide VAT format table for jurisdictions beyond generic 8–12
 37. ★ Fuzz targets as a CI leg once the WIP lands
 38. ★ LEI refresh tooling (scripted re-fetch + vector regeneration)
-    — ROUTED 2026-11-22: ROADMAP theme "GLEIF vector cadence"
+— ROUTED 2026-11-22: ROADMAP theme "GLEIF vector cadence"
 39. ⚑ Registry IO client (STACK.md revisit trigger: only when a second consumer exists)
 40. ⚑ Release-cadence decision: the daemon cuts releases (v0.1.1 within minutes of the
 fix) — decide whether that speed is intended for behavior-changing fixes or whether

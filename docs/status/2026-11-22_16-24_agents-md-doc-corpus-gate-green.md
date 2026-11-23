@@ -50,33 +50,33 @@
 
 ## f) Next things (25 real ones — padded beyond this would be invention)
 
-| #  | Task                                                                                                         | Effort | Where it lands            |
-| -- | ------------------------------------------------------------------------------------------------------------ | ------ | ------------------------- |
-| 1  | Fix AGENTS.md temporal pollution (drop dates/version qualifier; 3 edits)                                     | S      | this repo                 |
-| 2  | Add dprint remote-plugin gotcha to AGENTS.md tool gotchas                                                    | S      | this repo                 |
-| 3  | De-duplicate migration narrative across README/STACK/AGENTS (CHANGELOG = single history home)                | S      | this repo                 |
-| 4  | Write `ParseTaxNumber` vectors (3 codes + DE 10-13 bounds + VAT-shape rejection)                             | S      | this repo                 |
-| 5  | Write `RegisterRef` vectors (2 codes)                                                                        | S      | this repo                 |
-| 6  | Write `RequiresRegistryAnchor`/`AllowsLEI` vectors                                                           | S      | this repo                 |
-| 7  | Flip the three FEATURES rows to FULLY_FUNCTIONAL after vectors land                                          | S      | this repo                 |
-| 8  | REGON 9-digit (weights 8-9-2-3-4-5-6-7, remainder 10 → check digit 0 — opposite of NIP)                      | M      | this repo                 |
-| 9  | REGON 14-digit form + GUS official example vectors                                                           | M      | this repo                 |
-| 10 | Delete company-master-data's local REGON copy after coverage                                                 | S      | repo: company-master-data |
-| 11 | Fix invoices' stale `// indirect` on go-legalparty (`go mod tidy`)                                           | S      | repo: invoices            |
-| 12 | Decide and wire CI (repo has zero workflows; buildflow-in-CI is the fleet pattern candidate)                 | M      | this repo                 |
-| 13 | Run `buildflow --build-mode full` once (CI/release mode never exercised)                                     | M      | this repo                 |
-| 14 | Verify SECURITY.md contact + AUTHORS content (both unread this session)                                      | S      | this repo                 |
-| 15 | Score AGENTS.md against the guide's full rubric (section 6+ unread)                                          | S      | this repo                 |
-| 16 | Record "use internal/" advisory as deliberate non-fix (library = all-public by design)                       | S      | this repo                 |
-| 17 | Add TaxNumber + RegisterRef to README example block                                                          | S      | this repo                 |
-| 18 | Fuzz targets for the parsers (fleet pattern: go-error-family carries 16; checksum parsers are prime targets) | M      | this repo                 |
-| 19 | Release decision: v0.1.1 (docs/config) vs hold for REGON+vectors as v0.2.0                                   | S      | decision                  |
-| 20 | pkg.go.dev render check after next release                                                                   | S      | post-release              |
+| #  | Task                                                                                                                                                       | Effort | Where it lands            |
+| -- | ---------------------------------------------------------------------------------------------------------------------------------------------------------- | ------ | ------------------------- |
+| 1  | Fix AGENTS.md temporal pollution (drop dates/version qualifier; 3 edits)                                                                                   | S      | this repo                 |
+| 2  | Add dprint remote-plugin gotcha to AGENTS.md tool gotchas                                                                                                  | S      | this repo                 |
+| 3  | De-duplicate migration narrative across README/STACK/AGENTS (CHANGELOG = single history home)                                                              | S      | this repo                 |
+| 4  | Write `ParseTaxNumber` vectors (3 codes + DE 10-13 bounds + VAT-shape rejection)                                                                           | S      | this repo                 |
+| 5  | Write `RegisterRef` vectors (2 codes)                                                                                                                      | S      | this repo                 |
+| 6  | Write `RequiresRegistryAnchor`/`AllowsLEI` vectors                                                                                                         | S      | this repo                 |
+| 7  | Flip the three FEATURES rows to FULLY_FUNCTIONAL after vectors land                                                                                        | S      | this repo                 |
+| 8  | REGON 9-digit (weights 8-9-2-3-4-5-6-7, remainder 10 → check digit 0 — opposite of NIP)                                                                    | M      | this repo                 |
+| 9  | REGON 14-digit form + GUS official example vectors                                                                                                         | M      | this repo                 |
+| 10 | Delete company-master-data's local REGON copy after coverage                                                                                               | S      | repo: company-master-data |
+| 11 | Fix invoices' stale `// indirect` on go-legalparty (`go mod tidy`)                                                                                         | S      | repo: invoices            |
+| 12 | Decide and wire CI (repo has zero workflows; buildflow-in-CI is the fleet pattern candidate)                                                               | M      | this repo                 |
+| 13 | Run `buildflow --build-mode full` once (CI/release mode never exercised)                                                                                   | M      | this repo                 |
+| 14 | Verify SECURITY.md contact + AUTHORS content (both unread this session)                                                                                    | S      | this repo                 |
+| 15 | Score AGENTS.md against the guide's full rubric (section 6+ unread)                                                                                        | S      | this repo                 |
+| 16 | Record "use internal/" advisory as deliberate non-fix (library = all-public by design)                                                                     | S      | this repo                 |
+| 17 | Add TaxNumber + RegisterRef to README example block                                                                                                        | S      | this repo                 |
+| 18 | Fuzz targets for the parsers (fleet pattern: go-error-family carries 16; checksum parsers are prime targets)                                               | M      | this repo                 |
+| 19 | Release decision: v0.1.1 (docs/config) vs hold for REGON+vectors as v0.2.0                                                                                 | S      | decision                  |
+| 20 | pkg.go.dev render check after next release                                                                                                                 | S      | post-release              |
 | 21 | Triage first Dependabot wave when it arrives (weekly gomod) — DONE 2026-11-22: first wave triaged (zero open PRs, zero open alerts) as part of v0.2.0 prep | S      | recurring                 |
-| 22 | dprint local-plugin wiring decision (accept network fetch vs local wasm)                                     | S      | decision                  |
-| 23 | Re-run fleet domain-language census (this repo now HAS a DOMAIN_LANGUAGE.md to count)                        | M      | fleet-level               |
-| 24 | Check legalparty-model's leftover identifiers_test.go purpose (aliases or dead?)                             | S      | repo: cqrs-htmx           |
-| 25 | Align CHANGELOG keepachangelog link version with siblings (1.0.0 vs my 1.1.0)                                | S      | this repo                 |
+| 22 | dprint local-plugin wiring decision (accept network fetch vs local wasm)                                                                                   | S      | decision                  |
+| 23 | Re-run fleet domain-language census (this repo now HAS a DOMAIN_LANGUAGE.md to count)                                                                      | M      | fleet-level               |
+| 24 | Check legalparty-model's leftover identifiers_test.go purpose (aliases or dead?)                                                                           | S      | repo: cqrs-htmx           |
+| 25 | Align CHANGELOG keepachangelog link version with siblings (1.0.0 vs my 1.1.0)                                                                              | S      | this repo                 |
 
 ## g) Questions I cannot answer myself
 

@@ -20,8 +20,15 @@ cd "$ROOT" || exit 2
 failures=0
 total=0
 
-ok()   { printf '[ok]   %s\n' "$1"; total=$((total + 1)); }
-drift() { printf '[DRIFT] %s\n' "$1"; failures=$((failures + 1)); total=$((total + 1)); }
+ok() {
+	printf '[ok]   %s\n' "$1"
+	total=$((total + 1))
+}
+drift() {
+	printf '[DRIFT] %s\n' "$1"
+	failures=$((failures + 1))
+	total=$((total + 1))
+}
 
 # check <label> <file> <grep-extended-pattern>
 check() {

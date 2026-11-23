@@ -69,3 +69,31 @@ func TestParseTaxNumber(t *testing.T) {
 		})
 	}
 }
+
+func TestTaxNumberIsValidFor(t *testing.T) {
+	t.Parallel()
+
+	if !TaxNumber("217/8150/8173").IsValidFor("DE") {
+		t.Fatal("separator-carrying Steuernummer must be valid for DE")
+	}
+
+	if TaxNumber("123456789").IsValidFor("DE") {
+		t.Fatal("9 digits must be invalid for DE (Steuernummer has 10-13)")
+	}
+
+	if !TaxNumber("123456789").IsValidFor("FR") {
+		t.Fatal("9 digits must be valid for a generic jurisdiction (5-16)")
+	}
+
+	if !TaxNumber("123456").IsValidFor("FR") {
+		t.Fatal("generic 5-16 input must be valid for a non-DE jurisdiction")
+	}
+
+	if TaxNumber("DE136695976").IsValidFor("DE") {
+		t.Fatal("VAT-shaped input must be invalid as a tax number")
+	}
+
+	if TaxNumber("").IsValidFor("DE") {
+		t.Fatal("zero value must be invalid for any country")
+	}
+}

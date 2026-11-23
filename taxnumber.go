@@ -32,6 +32,16 @@ func ParseTaxNumber(country CountryCode, s string) (TaxNumber, error) {
 	return TaxNumber(v), nil
 }
 
+// IsValidFor reports whether the value parses as a tax number for the
+// given country, discarding the parsed result. The country is part of the
+// contract: a tax number has no prefix, so validity without a jurisdiction
+// is not answerable. The zero value is not valid for any country.
+func (t TaxNumber) IsValidFor(country CountryCode) bool {
+	_, err := ParseTaxNumber(country, string(t))
+
+	return err == nil
+}
+
 // validateTaxNumberBody enforces the per-jurisdiction shape after separator
 // removal: Germany takes the 10-13 digit national forms, everyone else is
 // format-checked.

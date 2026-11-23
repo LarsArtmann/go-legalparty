@@ -15,6 +15,10 @@ cc,  err := legalparty.ParseCountryCode("de")            // → DE (assigned onl
 lf,  err := legalparty.ParseLegalFormClass("legal_entity")
 ```
 
+Every parser also has a one-call validity check — `legalparty.LEI(s).IsValid()`,
+`legalparty.TaxNumber(s).IsValidFor(cc)` — for callers that need the boolean
+without the normalized value. The zero value is never valid.
+
 ## Installation
 
 ```

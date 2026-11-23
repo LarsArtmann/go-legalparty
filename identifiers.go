@@ -55,6 +55,15 @@ func ParseLEI(s string) (LEI, error) {
 	return LEI(v), nil
 }
 
+// IsValid reports whether the value parses as a LEI, discarding the
+// parsed result: the one-call validity check for callers that need no
+// normalized form. The zero value is not valid.
+func (l LEI) IsValid() bool {
+	_, err := ParseLEI(string(l))
+
+	return err == nil
+}
+
 // validLEIChecksum applies the ISO 17442 check: map every character to its
 // numeric form (digits as-is, A=10 .. Z=35), interpret the whole 20-character
 // string as one decimal number, and require number mod 97 == 1.
@@ -225,6 +234,15 @@ func ParseVATID(s string) (VATID, error) {
 	}
 
 	return VATID(v), nil
+}
+
+// IsValid reports whether the value parses as a VATID in canonical
+// prefixed form, discarding the parsed result. The zero value is not
+// valid; unprefixed domestic forms are not guessed.
+func (v VATID) IsValid() bool {
+	_, err := ParseVATID(string(v))
+
+	return err == nil
 }
 
 func validateVATNationalPart(cc CountryCode, national string) error {

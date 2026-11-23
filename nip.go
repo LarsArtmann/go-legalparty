@@ -48,3 +48,12 @@ func ParseNIP(s string) (NIP, error) {
 
 	return NIP(v), nil
 }
+
+// IsValid reports whether the value parses as a NIP, discarding the
+// parsed result. The zero value is not valid; a PL prefix is accepted and
+// normalized away on store.
+func (n NIP) IsValid() bool {
+	_, err := ParseNIP(string(n))
+
+	return err == nil
+}

@@ -40,6 +40,15 @@ func ParseRegon(s string) (Regon, error) {
 	return Regon(v), nil
 }
 
+// IsValid reports whether the value parses as a REGON, discarding the
+// parsed result. Both forms validate the parent nine-digit checksum; the
+// 14-digit serial is deliberately unchecked (see validRegonChecksum).
+func (r Regon) IsValid() bool {
+	_, err := ParseRegon(string(r))
+
+	return err == nil
+}
+
 // Spec constants, named as in the fleet's consumer copies: the numbers
 // encode regulation edges, not tuning knobs.
 const (

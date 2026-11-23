@@ -301,3 +301,67 @@ func TestNewRegisterRef(t *testing.T) {
 		}
 	})
 }
+
+func TestIsValidSurface(t *testing.T) {
+	t.Parallel()
+
+	t.Run("LEI", func(t *testing.T) {
+		t.Parallel()
+
+		if !LEI(leiLiveDE).IsValid() {
+			t.Fatal("live DE LEI must be valid")
+		}
+
+		if !LEI("7245007cs2lxyd2jct52").IsValid() {
+			t.Fatal("lowercase input must be valid (normalizes)")
+		}
+
+		if LEI("7245007CS2LXYD2JCT53").IsValid() {
+			t.Fatal("tampered checksum must be invalid")
+		}
+
+		if LEI("").IsValid() || LEI("5493001KJTIIGC8Y1V1").IsValid() {
+			t.Fatal("zero value and too-short input must be invalid")
+		}
+	})
+
+	t.Run("VATID", func(t *testing.T) {
+		t.Parallel()
+
+		if !VATID("DE136695976").IsValid() {
+			t.Fatal("BMF example DE136695976 must be valid")
+		}
+
+		if VATID("DE136695978").IsValid() {
+			t.Fatal("wrong DE checksum must be invalid")
+		}
+
+		if VATID("NLA23456789B01").IsValid() {
+			t.Fatal("letters in NL digit positions must be invalid")
+		}
+
+		if VATID("").IsValid() || VATID("5260000152").IsValid() {
+			t.Fatal("zero value and prefix-less input must be invalid (no country is guessed)")
+		}
+	})
+
+	t.Run("NIP", func(t *testing.T) {
+		t.Parallel()
+
+		if !NIP("5260000152").IsValid() {
+			t.Fatal("MoF NIP 5260000152 must be valid")
+		}
+
+		if !NIP("PL5260000152").IsValid() {
+			t.Fatal("PL-prefixed NIP must be valid")
+		}
+
+		if NIP("1000000160").IsValid() {
+			t.Fatal("remainder-10 NIP must be invalid by regulation")
+		}
+
+		if NIP("").IsValid() || NIP("526000015").IsValid() {
+			t.Fatal("zero value and short input must be invalid")
+		}
+	})
+}

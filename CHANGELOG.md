@@ -4,6 +4,12 @@ All notable changes. Dates are 2026 unless stated.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
+## [Unreleased]
+
+### Added
+
+- Uniform `IsValid` surface: `LEI.IsValid`, `VATID.IsValid`, `NIP.IsValid`, `Regon.IsValid`, and `TaxNumber.IsValidFor(cc)` — the one-call validity idiom from the type-model review's top finding, parse-and-discard semantics, zero value never valid, TaxNumber validity deliberately country-dependent. Vectors cover valid, invalid, and zero values per type plus the wrong-country case.
+
 ## [v0.2.0] - 2026-11-22
 
 ### Added
